@@ -61,11 +61,11 @@
                 <label
                   v-for="size in pizza.sizes"
                   :key="size.id"
-                  :class="`diameter__input--${PIZZA_SIZES[size.name]}`"
+                  :class="`diameter__input--${PIZZA_SIZES[size.id]}`"
                   class="diameter__input"
                 >
                   <input
-                    :value="`${PIZZA_SIZES[size.name]}`"
+                    :value="`${PIZZA_SIZES[size.id]}`"
                     type="radio"
                     name="diameter"
                     class="visually-hidden"
@@ -92,7 +92,7 @@
                     class="radio ingredients__input"
                   >
                     <input
-                      :value="`${SAUCES_ENG_NAMES[sauce.name]}`"
+                      :value="`${SAUCES_ENG_NAMES[sauce.id]}`"
                       :checked="sauce.name === 'Томатный'"
                       type="radio"
                       name="sauce"
@@ -112,7 +112,7 @@
                     >
                       <span
                         :class="`filling--${
-                          INGREDIENTS_ENG_NAMES[ingredient.name]
+                          INGREDIENTS_ENG_NAMES[ingredient.id]
                         }`"
                         class="filling"
                       >
