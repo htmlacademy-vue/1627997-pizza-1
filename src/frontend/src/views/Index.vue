@@ -25,7 +25,11 @@
             @pizza-param-changed="changeRecipe"
           />
 
-          <BuilderPizzaView :pizza-recipe="pizzaRecipe" />
+          <BuilderPizzaView
+            :pizza="pizza"
+            :pizza-recipe="pizzaRecipe"
+            v-model="pizzaName"
+          />
         </div>
       </form>
     </main>
@@ -68,8 +72,9 @@ export default {
         dough: { ...pizza.dough[0] },
         sizes: { ...pizza.sizes[0] },
         sauces: { ...pizza.sauces[0] },
-        ingredients: [], //...[...pizza.ingredients].slice(0, 2)
+        ingredients: [],
       },
+      pizzaName: "",
     };
   },
   components: {

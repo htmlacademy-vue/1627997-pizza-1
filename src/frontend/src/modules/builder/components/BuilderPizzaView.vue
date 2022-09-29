@@ -6,6 +6,8 @@
         type="text"
         name="pizza_name"
         placeholder="Введите название пиццы"
+        :value="value"
+        @input="$emit('input', $event.target.value)"
       />
     </label>
 
@@ -29,8 +31,10 @@
     </div>
 
     <div class="content__result">
-      <BuilderPriceCounter />
-      <button type="button" class="button" disabled>Готовьте!</button>
+      <BuilderPriceCounter :pizza="pizza" :pizza-recipe="pizzaRecipe" />
+      <button type="button" class="button" :disabled="cookButtonIsDisabled">
+        Готовьте!
+      </button>
     </div>
   </div>
 </template>
@@ -49,8 +53,16 @@ import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounte
 export default {
   name: "BuilderPizzaView",
   props: {
+    pizza: {
+      type: Object,
+      required: true,
+    },
     pizzaRecipe: {
       type: Object,
+      required: true,
+    },
+    value: {
+      type: String,
       required: true,
     },
   },
@@ -76,6 +88,9 @@ export default {
     },
     doughSauceResultClass() {
       return `pizza--foundation--${this.doughClass}-${this.sauceClass}`;
+    },
+    cookButtonIsDisabled() {
+      return !this.value.length || !this.pizzaRecipe.ingredients.length;
     },
   },
 };
