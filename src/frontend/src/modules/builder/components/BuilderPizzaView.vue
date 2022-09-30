@@ -1,42 +1,44 @@
 <template>
-  <div class="content__pizza">
-    <label class="input">
-      <span class="visually-hidden">Название пиццы2</span>
-      <input
-        type="text"
-        name="pizza_name"
-        placeholder="Введите название пиццы"
-        :value="value"
-        @input="$emit('input', $event.target.value)"
-      />
-    </label>
+  <AppDrop @drop="changeIngredientCount">
+    <div class="content__pizza">
+      <label class="input">
+        <span class="visually-hidden">Название пиццы2</span>
+        <input
+          type="text"
+          name="pizza_name"
+          placeholder="Введите название пиццы"
+          :value="value"
+          @input="$emit('input', $event.target.value)"
+        />
+      </label>
 
-    <div class="content__constructor">
-      <div class="pizza" :class="doughSauceResultClass">
-        <div class="pizza__wrapper">
-          <div
-            v-for="ingredient in pizzaRecipe.ingredients"
-            :key="ingredient.id"
-            :class="[
-              `pizza__filling--${INGREDIENTS_ENG_NAMES[ingredient.id]}`,
-              {
-                'pizza__filling--second': ingredient.count === 2,
-                'pizza__filling--third': ingredient.count === 3,
-              },
-            ]"
-            class="pizza__filling"
-          ></div>
+      <div class="content__constructor">
+        <div class="pizza" :class="doughSauceResultClass">
+          <div class="pizza__wrapper">
+            <div
+              v-for="ingredient in pizzaRecipe.ingredients"
+              :key="ingredient.id"
+              :class="[
+                `pizza__filling--${INGREDIENTS_ENG_NAMES[ingredient.id]}`,
+                {
+                  'pizza__filling--second': ingredient.count === 2,
+                  'pizza__filling--third': ingredient.count === 3,
+                },
+              ]"
+              class="pizza__filling"
+            ></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="content__result">
-      <BuilderPriceCounter :pizza="pizza" :pizza-recipe="pizzaRecipe" />
-      <button type="button" class="button" :disabled="cookButtonIsDisabled">
-        Готовьте!
-      </button>
+      <div class="content__result">
+        <BuilderPriceCounter :pizza="pizza" :pizza-recipe="pizzaRecipe" />
+        <button type="button" class="button" :disabled="cookButtonIsDisabled">
+          Готовьте!
+        </button>
+      </div>
     </div>
-  </div>
+  </AppDrop>
 </template>
 
 <script>
@@ -49,6 +51,7 @@ import {
 } from "@/common/constants";
 
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
+import AppDrop from "@/common/components/AppDrop";
 
 export default {
   name: "BuilderPizzaView",
@@ -76,6 +79,7 @@ export default {
   },
   components: {
     BuilderPriceCounter,
+    AppDrop,
   },
   computed: {
     //вычисляем css классы для теста и соуса
@@ -91,6 +95,15 @@ export default {
     },
     cookButtonIsDisabled() {
       return !this.value.length || !this.pizzaRecipe.ingredients.length;
+    },
+  },
+  methods: {
+    changeIngredientCount({ id }) {
+      this.$emit("pizza-param-changed", {
+        pizzaParam: "ingredients",
+        id,
+        count: 1,
+      });
     },
   },
 };

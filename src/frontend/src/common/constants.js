@@ -32,3 +32,6 @@ export const DOUGH_TYPES = {
   1: "light",
   2: "large"
 };
+
+export const MOVE = 'move';
+export const DATA_TRANSFER_PAYLOAD = 'payload';

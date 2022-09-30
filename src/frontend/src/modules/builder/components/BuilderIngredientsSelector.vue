@@ -36,12 +36,16 @@
               :key="ingredient.id"
               class="ingredients__item"
             >
-              <span
-                :class="`filling--${INGREDIENTS_ENG_NAMES[ingredient.id]}`"
-                class="filling"
+              <AppDrag
+                :transfer-data="ingredient"
+                :draggable="canBeDragged(ingredient)"
               >
-                {{ ingredient.name }}
-              </span>
+                <SelectorItem
+                  :ingredient="ingredient"
+                  :pizzaRecipe="pizzaRecipe"
+                  @change-ingredient-count="changeIngredientCount"
+                />
+              </AppDrag>
               <ItemCounter
                 :ingredientId="ingredient.id"
                 :pizzaRecipe="pizzaRecipe"
@@ -59,12 +63,16 @@
 import { SAUCES_ENG_NAMES, INGREDIENTS_ENG_NAMES } from "@/common/constants";
 import RadioButton from "@/common/components/RadioButton";
 import ItemCounter from "@/common/components/ItemCounter";
+import SelectorItem from "@/common/components/SelectorItem";
+import AppDrag from "@/common/components/AppDrag";
 
 export default {
   name: "BuilderIngredientsSelector",
   components: {
     RadioButton,
     ItemCounter,
+    SelectorItem,
+    AppDrag,
   },
   props: {
     pizza: {
@@ -89,6 +97,15 @@ export default {
         id,
         count,
       });
+    },
+    canBeDragged({ id }) {
+      const isInRecipe = this.pizzaRecipe.ingredients.some(
+        (ing) => ing.id === id
+      );
+      return !(
+        isInRecipe &&
+        this.pizzaRecipe.ingredients.find((ing) => ing.id === id).count === 3
+      );
     },
   },
 };

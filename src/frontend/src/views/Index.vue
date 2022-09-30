@@ -28,6 +28,7 @@
           <BuilderPizzaView
             :pizza="pizza"
             :pizza-recipe="pizzaRecipe"
+            @pizza-param-changed="changeRecipe"
             v-model="pizzaName"
           />
         </div>
