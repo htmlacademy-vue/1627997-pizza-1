@@ -27,3 +27,11 @@ export const SAUCES_ENG_NAMES = {
   1: "tomato",
   2: "creamy",
 };
+
+export const DOUGH_TYPES = {
+  1: "light",
+  2: "large"
+};
+
+export const MOVE = 'move';
+export const DATA_TRANSFER_PAYLOAD = 'payload';
