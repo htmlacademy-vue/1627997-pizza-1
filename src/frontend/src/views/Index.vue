@@ -1,7 +1,5 @@
 <template>
   <div>
-    <AppLayout />
-
     <main class="content">
       <form action="#" method="post">
         <div class="content__wrapper">
@@ -42,7 +40,6 @@
 import misc from "@/static/misc.json";
 import pizza from "@/static/pizza.json";
 import user from "@/static/user.json";
-import AppLayout from "@/layouts/AppLayout";
 
 //импортируем константы
 import {
@@ -79,7 +76,6 @@ export default {
     };
   },
   components: {
-    AppLayout,
     BuilderDoughSelector,
     BuilderSizeSelector,
     BuilderIngredientsSelector,
