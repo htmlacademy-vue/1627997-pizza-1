@@ -16,7 +16,7 @@
             :value="dough.id"
             :checked="pizzaRecipe.dough.id === dough.id"
             @change="
-              $emit('pizza-param-changed', {
+              setRecipeParam({
                 pizzaParam: 'dough',
                 id: $event.target.value,
               })
@@ -31,28 +31,26 @@
 </template>
 
 <script>
-import { DOUGH_TYPES } from "@/common/constants";
 import RadioButton from "@/common/components/RadioButton";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "BuilderDoughSelector",
   components: {
     RadioButton,
   },
-  props: {
-    pizza: {
-      type: Object,
-      required: true,
-    },
-    pizzaRecipe: {
-      type: Object,
-      required: true,
-    },
-  },
   data() {
-    return {
-      DOUGH_TYPES,
-    };
+    return {};
+  },
+  computed: {
+    ...mapState("Builder", {
+      pizza: "pizzaStore",
+      pizzaRecipe: "pizzaRecipeStore",
+      DOUGH_TYPES: "DOUGH_TYPES",
+    }),
+  },
+  methods: {
+    ...mapMutations("Builder", ["setRecipeParam"]),
   },
 };
 </script>

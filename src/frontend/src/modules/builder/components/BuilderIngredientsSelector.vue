@@ -17,7 +17,7 @@
               :value="sauce.id"
               :checked="pizzaRecipe.sauces.id === sauce.id"
               @change="
-                $emit('pizza-param-changed', {
+                setRecipeParam({
                   pizzaParam: 'sauces',
                   id: $event.target.value,
                 })
@@ -42,13 +42,11 @@
               >
                 <SelectorItem
                   :ingredient="ingredient"
-                  :pizzaRecipe="pizzaRecipe"
                   @change-ingredient-count="changeIngredientCount"
                 />
               </AppDrag>
               <ItemCounter
                 :ingredientId="ingredient.id"
-                :pizzaRecipe="pizzaRecipe"
                 @change-ingredient-count="changeIngredientCount"
               />
             </li>
@@ -60,11 +58,12 @@
 </template>
 
 <script>
-import { SAUCES_ENG_NAMES, INGREDIENTS_ENG_NAMES } from "@/common/constants";
+//import { SAUCES_ENG_NAMES, INGREDIENTS_ENG_NAMES } from "@/common/constants";
 import RadioButton from "@/common/components/RadioButton";
 import ItemCounter from "@/common/components/ItemCounter";
 import SelectorItem from "@/common/components/SelectorItem";
 import AppDrag from "@/common/components/AppDrag";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "BuilderIngredientsSelector",
@@ -74,25 +73,21 @@ export default {
     SelectorItem,
     AppDrag,
   },
-  props: {
-    pizza: {
-      type: Object,
-      required: true,
-    },
-    pizzaRecipe: {
-      type: Object,
-      required: true,
-    },
-  },
   data() {
-    return {
-      SAUCES_ENG_NAMES,
-      INGREDIENTS_ENG_NAMES,
-    };
+    return {};
+  },
+  computed: {
+    ...mapState("Builder", {
+      pizza: "pizzaStore",
+      pizzaRecipe: "pizzaRecipeStore",
+      SAUCES_ENG_NAMES: "SAUCES_ENG_NAMES",
+      INGREDIENTS_ENG_NAMES: "INGREDIENTS_ENG_NAMES",
+    }),
   },
   methods: {
+    ...mapMutations("Builder", ["setRecipeParam", "setRecipeIngredient"]),
     changeIngredientCount({ id, count }) {
-      this.$emit("pizza-param-changed", {
+      this.setRecipeIngredient({
         pizzaParam: "ingredients",
         id,
         count,

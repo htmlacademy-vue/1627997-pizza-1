@@ -9,7 +9,12 @@
     >
       <span class="visually-hidden">Меньше</span>
     </button>
-    <input type="text" name="counter" class="counter__input" :value="itemCounterCurrentValue" />
+    <input
+      type="text"
+      name="counter"
+      class="counter__input"
+      :value="itemCounterCurrentValue"
+    />
     <button
       type="button"
       class="counter__button counter__button--plus"
@@ -22,6 +27,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "ItemCounter",
   props: {
@@ -33,15 +40,14 @@ export default {
       type: Number,
       required: true,
     },
-    pizzaRecipe: {
-      type: Object,
-      required: true,
-    },
   },
   data() {
     return {};
   },
   computed: {
+    ...mapState("Builder", {
+      pizzaRecipe: "pizzaRecipeStore",
+    }),
     buttonPlusIsDisabled() {
       return (
         this.pizzaRecipe.ingredients.filter(

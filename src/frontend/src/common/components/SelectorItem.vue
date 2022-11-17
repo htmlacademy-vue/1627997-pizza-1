@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { INGREDIENTS_ENG_NAMES } from "@/common/constants";
+import { mapState } from "vuex";
 
 export default {
   name: "SelectorItem",
@@ -18,15 +18,15 @@ export default {
       type: Object,
       required: true,
     },
-    pizzaRecipe: {
-      type: Object,
-      required: true,
-    },
   },
   data() {
-    return {
-      INGREDIENTS_ENG_NAMES,
-    };
+    return {};
+  },
+  computed: {
+    ...mapState("Builder", {
+      pizzaRecipe: "pizzaRecipeStore",
+      INGREDIENTS_ENG_NAMES: "INGREDIENTS_ENG_NAMES",
+    }),
   },
 };
 </script>

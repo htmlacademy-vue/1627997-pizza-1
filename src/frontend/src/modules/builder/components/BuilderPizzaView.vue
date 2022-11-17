@@ -7,8 +7,7 @@
           type="text"
           name="pizza_name"
           placeholder="Введите название пиццы"
-          :value="value"
-          @input="$emit('input', $event.target.value)"
+          v-model="pizzaName"
         />
       </label>
 
@@ -32,7 +31,7 @@
       </div>
 
       <div class="content__result">
-        <BuilderPriceCounter :pizza="pizza" :pizza-recipe="pizzaRecipe" />
+        <BuilderPriceCounter />
         <button type="button" class="button" :disabled="cookButtonIsDisabled">
           Готовьте!
         </button>
@@ -42,47 +41,42 @@
 </template>
 
 <script>
-//импортируем константы
-import {
-  PIZZA_SIZES,
-  INGREDIENTS_ENG_NAMES,
-  SAUCES_ENG_NAMES,
-  DOUGH_TYPES,
-} from "@/common/constants";
-
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 import AppDrop from "@/common/components/AppDrop";
 
+import { mapState, mapMutations } from "vuex";
+
 export default {
   name: "BuilderPizzaView",
-  props: {
-    pizza: {
-      type: Object,
-      required: true,
-    },
-    pizzaRecipe: {
-      type: Object,
-      required: true,
-    },
-    value: {
-      type: String,
-      required: true,
-    },
-  },
   data() {
-    return {
-      PIZZA_SIZES,
-      INGREDIENTS_ENG_NAMES,
-      SAUCES_ENG_NAMES,
-      DOUGH_TYPES,
-    };
+    return {};
   },
   components: {
     BuilderPriceCounter,
     AppDrop,
   },
   computed: {
+    ...mapState("Builder", {
+      PIZZA_SIZES: "PIZZA_SIZES",
+      INGREDIENTS_ENG_NAMES: "INGREDIENTS_ENG_NAMES",
+      SAUCES_ENG_NAMES: "SAUCES_ENG_NAMES",
+      DOUGH_TYPES: "DOUGH_TYPES",
+      pizza: "pizzaStore",
+      pizzaRecipe: "pizzaRecipeStore",
+    }),
+    pizzaName: {
+      //сделал, как в документации для v-model двунаправленное вычисляемое свойство
+      get() {
+        //return this.$store.state.Builder.pizzaNameStore;
+        return this.$store.getters["Builder/getPizzaName"];
+      },
+      set(value) {
+        this.$store.commit("Builder/setPizzaName", value);
+      },
+    },
+
     //вычисляем css классы для теста и соуса
+    //UPD: оставил эти вычисляемые свойства в компоненте, т.к. считаю, что они должны быть локальными
     doughClass() {
       //тут в ТЗ разные английские названия классов, в BuilderDoughSelector модификатор --light\large, а здесь --big\small
       return this.pizzaRecipe.dough.id === 1 ? "small" : "big";
@@ -94,12 +88,13 @@ export default {
       return `pizza--foundation--${this.doughClass}-${this.sauceClass}`;
     },
     cookButtonIsDisabled() {
-      return !this.value.length || !this.pizzaRecipe.ingredients.length;
+      return !this.pizzaName.length || !this.pizzaRecipe.ingredients.length;
     },
   },
   methods: {
+    ...mapMutations("Builder", ["setRecipeParam", "setRecipeIngredient"]),
     changeIngredientCount({ id }) {
-      this.$emit("pizza-param-changed", {
+      this.setRecipeIngredient({
         pizzaParam: "ingredients",
         id,
         count: 1,

@@ -16,7 +16,7 @@
             :value="size.id"
             :checked="pizzaRecipe.sizes.id === size.id"
             @change="
-              $emit('pizza-param-changed', {
+              setRecipeParam({
                 pizzaParam: 'sizes',
                 id: $event.target.value,
               })
@@ -30,28 +30,26 @@
 </template>
 
 <script>
-import { PIZZA_SIZES } from "@/common/constants";
 import RadioButton from "@/common/components/RadioButton";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "BuilderSizeSelector",
   components: {
     RadioButton,
   },
-  props: {
-    pizza: {
-      type: Object,
-      required: true,
-    },
-    pizzaRecipe: {
-      type: Object,
-      required: true,
-    },
-  },
   data() {
-    return {
-      PIZZA_SIZES,
-    };
+    return {};
+  },
+  computed: {
+    ...mapState("Builder", {
+      pizza: "pizzaStore",
+      pizzaRecipe: "pizzaRecipeStore",
+      PIZZA_SIZES: "PIZZA_SIZES",
+    }),
+  },
+  methods: {
+    ...mapMutations("Builder", ["setRecipeParam"]),
   },
 };
 </script>
