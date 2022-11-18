@@ -32,7 +32,12 @@
 
       <div class="content__result">
         <BuilderPriceCounter />
-        <button type="button" class="button" :disabled="cookButtonIsDisabled">
+        <button
+          type="button"
+          class="button"
+          :disabled="cookButtonIsDisabled"
+          @click="addNewPizzaToCartAction(pizzaRecipe)"
+        >
           Готовьте!
         </button>
       </div>
@@ -44,7 +49,7 @@
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 import AppDrop from "@/common/components/AppDrop";
 
-import { mapState, mapMutations } from "vuex";
+import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 
 export default {
   name: "BuilderPizzaView",
@@ -56,6 +61,7 @@ export default {
     AppDrop,
   },
   computed: {
+    ...mapGetters("Builder", ["pizzaRecipeInitial"]),
     ...mapState("Builder", {
       PIZZA_SIZES: "PIZZA_SIZES",
       INGREDIENTS_ENG_NAMES: "INGREDIENTS_ENG_NAMES",
@@ -92,7 +98,12 @@ export default {
     },
   },
   methods: {
-    ...mapMutations("Builder", ["setRecipeParam", "setRecipeIngredient"]),
+    ...mapMutations("Builder", [
+      "setRecipeParam",
+      "setRecipeIngredient",
+      "setPizzaRecipeInitial",
+    ]),
+    ...mapActions("Cart", ["addNewPizzaToCartAction"]),
     changeIngredientCount({ id }) {
       this.setRecipeIngredient({
         pizzaParam: "ingredients",

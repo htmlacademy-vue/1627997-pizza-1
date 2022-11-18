@@ -25,12 +25,12 @@ export default {
       sizes: { ...pizzaStore.sizes[0] },
       sauces: { ...pizzaStore.sauces[0] },
       ingredients: [],
+      pizzaNameStore: "",
     },
-    pizzaNameStore: "",
   },
   mutations: {
     setPizzaName(state, name) {
-      state.pizzaNameStore = name;
+      state.pizzaRecipeStore.pizzaNameStore = name;
     },
     //метод изменения размера, теста, соуса пиццы
     setRecipeParam(state, { pizzaParam, id }) {
@@ -64,9 +64,12 @@ export default {
         });
       }
     },
+    setPizzaRecipeInitial: (state, payload) => {
+      state.pizzaRecipeStore = {...payload};
+    },
   },
   getters: {
-    getPizzaName: (state) => state.pizzaNameStore,
+    getPizzaName: (state) => state.pizzaRecipeStore.pizzaNameStore,
     ingredientsTotalPrice: (state) => {
       return state.pizzaRecipeStore.ingredients.reduce((sum, item) => {
         return sum + (item?.count ?? 1) * item.price;
@@ -79,6 +82,15 @@ export default {
           state.pizzaRecipeStore.sauces.price +
           getters.ingredientsTotalPrice)
       );
+    },
+    pizzaRecipeInitial: (state) => {
+      return ({
+        dough: { ...state.pizzaStore.dough[0] },
+        sizes: { ...state.pizzaStore.sizes[0] },
+        sauces: { ...state.pizzaStore.sauces[0] },
+        ingredients: [],
+        pizzaNameStore: "купи еще, гад ;)",
+      })
     },
   },
   actions: {},
