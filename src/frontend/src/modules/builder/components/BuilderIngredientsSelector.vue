@@ -6,32 +6,8 @@
       <div class="sheet__content ingredients">
         <BuilderSauceSelector />
 
-        <div class="ingredients__sauce">
-          <p>Основной соус:</p>
-
-          <label
-            v-for="sauce in pizza.sauces"
-            :key="sauce.id"
-            class="radio ingredients__input"
-          >
-            <RadioButton
-              name="sauce_OLD"
-              :value="sauce.id"
-              :checked="pizzaRecipe.sauces.id === sauce.id"
-              @change="
-                setRecipeParam({
-                  pizzaParam: 'sauces',
-                  id: $event.target.value,
-                })
-              "
-            />
-            <span>{{ sauce.name }}</span>
-          </label>
-        </div>
-
         <div class="ingredients__filling">
           <p>Начинка NEW:</p>
-
           <ul class="ingredients__list">
             <BuilderIngredientItem
               v-for="ingredient in pizzaBuilder.ingredients"
@@ -40,54 +16,19 @@
             />
           </ul>
         </div>
-
-        <div class="ingredients__filling">
-          <p>Начинка:</p>
-
-          <ul class="ingredients__list">
-            <li
-              v-for="ingredient in pizza.ingredients"
-              :key="ingredient.id"
-              class="ingredients__item"
-            >
-              <AppDrag
-                :transfer-data="ingredient"
-                :draggable="canBeDragged(ingredient)"
-              >
-                <SelectorItem
-                  :ingredient="ingredient"
-                  @change-ingredient-count="changeIngredientCount"
-                />
-              </AppDrag>
-              <ItemCounter
-                :ingredientId="ingredient.id"
-                @change-ingredient-count="changeIngredientCount"
-              />
-            </li>
-          </ul>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-//import { SAUCES_ENG_NAMES, INGREDIENTS_ENG_NAMES } from "@/common/constants";
-import RadioButton from "@/common/components/RadioButton";
-import ItemCounter from "@/common/components/ItemCounter";
-import SelectorItem from "@/common/components/SelectorItem";
 import BuilderSauceSelector from "@/modules/builder/components/BuilderSauceSelector";
 import BuilderIngredientItem from "@/modules/builder/components/BuilderIngredientItem";
-import AppDrag from "@/common/components/AppDrag";
-import { mapState, mapMutations } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "BuilderIngredientsSelector",
   components: {
-    RadioButton,
-    ItemCounter,
-    SelectorItem,
-    AppDrag,
     BuilderSauceSelector,
     BuilderIngredientItem,
   },
@@ -96,31 +37,8 @@ export default {
   },
   computed: {
     ...mapState("Builder", {
-      pizza: "pizzaStore",
-      pizzaRecipe: "pizzaRecipeStore",
-      SAUCES_ENG_NAMES: "SAUCES_ENG_NAMES",
-      INGREDIENTS_ENG_NAMES: "INGREDIENTS_ENG_NAMES",
       pizzaBuilder: "pizzaBuilder",
     }),
-  },
-  methods: {
-    ...mapMutations("Builder", ["setRecipeParam", "setRecipeIngredient"]),
-    changeIngredientCount({ id, count }) {
-      this.setRecipeIngredient({
-        pizzaParam: "ingredients",
-        id,
-        count,
-      });
-    },
-    canBeDragged({ id }) {
-      const isInRecipe = this.pizzaRecipe.ingredients.some(
-        (ing) => ing.id === id
-      );
-      return !(
-        isInRecipe &&
-        this.pizzaRecipe.ingredients.find((ing) => ing.id === id).count === 3
-      );
-    },
   },
 };
 </script>

@@ -19,9 +19,6 @@ export default {
   components: { BuilderSelectorItem },
   computed: {
     ...mapState("Builder", {
-      pizza: "pizzaStore",
-      pizzaRecipe: "pizzaRecipeStore",
-      SAUCES_ENG_NAMES: "SAUCES_ENG_NAMES",
       pizzaBuilder: "pizzaBuilder",
     }),
   },

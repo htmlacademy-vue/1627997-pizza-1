@@ -3,7 +3,7 @@
   <li class="ingredients__item">
     <AppDrag :transfer-data="item" :allow-drag="item.count < 3">
       <span
-        :class="`filling--${INGREDIENTS_ENG_NAMES[item.id]}`"
+        :class="`filling--${item.value}`"
         class="filling"
       >
         {{ item.name }}
@@ -42,9 +42,6 @@ export default {
   },
   computed: {
     ...mapState("Builder", {
-      pizza: "pizzaStore",
-      pizzaRecipe: "pizzaRecipeStore",
-      INGREDIENTS_ENG_NAMES: "INGREDIENTS_ENG_NAMES",
       pizzaBuilder: "pizzaBuilder",
     }),
   },

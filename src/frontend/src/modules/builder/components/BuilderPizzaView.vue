@@ -62,18 +62,12 @@ export default {
     AppDrop,
   },
   computed: {
-    ...mapGetters("Builder", ["pizzaRecipeInitial", "ingredientsSelected"]),
     ...mapState("Builder", {
-      PIZZA_SIZES: "PIZZA_SIZES",
-      INGREDIENTS_ENG_NAMES: "INGREDIENTS_ENG_NAMES",
-      SAUCES_ENG_NAMES: "SAUCES_ENG_NAMES",
-      DOUGH_TYPES: "DOUGH_TYPES",
-      pizza: "pizzaStore",
-      pizzaRecipe: "pizzaRecipeStore",
       pizzaBuilder: "pizzaBuilder",
     }),
     ...mapGetters("Builder", [
       "pizzaRecipeIsReady",
+      "ingredientsSelected",
       "doughSelected",
       "sizeSelected",
       "sauceSelected",
@@ -104,19 +98,6 @@ export default {
     },
   },
   methods: {
-    ...mapMutations("Builder", [
-      "setRecipeParam",
-      "setRecipeIngredient",
-      "setPizzaRecipeInitial",
-    ]),
-
-    changeIngredientCount({ id }) {
-      this.setRecipeIngredient({
-        pizzaParam: "ingredients",
-        id,
-        count: 1,
-      });
-    },
     //новое действие для Drag-n-Drop
     ...mapActions("Builder", {
       drop: "dropIngredient",
