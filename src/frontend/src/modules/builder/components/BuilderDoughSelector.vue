@@ -4,14 +4,24 @@
       <h2 class="title title--small sheet__title">Выберите тесто</h2>
 
       <div class="sheet__content dough">
+        <BuilderSelectorItem
+          v-for="dough in pizzaBuilder.dough"
+          :key="dough.id"
+          :item="dough"
+          :class="`dough__input--${DOUGH_TYPES[dough.id]}`"
+          class="dough__input"
+        />
+      </div>
+
+      <div class="sheet__content dough">
         <label
           v-for="dough in pizza.dough"
-          :key="dough.id"
+          :key="2 + dough.id"
           :class="`dough__input--${DOUGH_TYPES[dough.id]}`"
           class="dough__input"
         >
           <RadioButton
-            name="dought"
+            name="dough_OLD"
             class="visually-hidden"
             :value="dough.id"
             :checked="pizzaRecipe.dough.id === dough.id"
@@ -32,12 +42,14 @@
 
 <script>
 import RadioButton from "@/common/components/RadioButton";
+import BuilderSelectorItem from "@/modules/builder/components/BuilderSelectorItem";
 import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "BuilderDoughSelector",
   components: {
     RadioButton,
+    BuilderSelectorItem,
   },
   data() {
     return {};
@@ -47,6 +59,7 @@ export default {
       pizza: "pizzaStore",
       pizzaRecipe: "pizzaRecipeStore",
       DOUGH_TYPES: "DOUGH_TYPES",
+      pizzaBuilder: "pizzaBuilder",
     }),
   },
   methods: {

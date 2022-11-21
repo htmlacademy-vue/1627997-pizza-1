@@ -1,9 +1,9 @@
 <template>
-  <p>Итого: {{ pizzaTotalPrice }} ₽</p>
+  <p>Итого: {{ pizzaTotalCost }} ₽</p>
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "BuilderPriceCounter",
@@ -11,11 +11,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters("Builder", ["pizzaTotalPrice"]),
-    ...mapState("Builder", {
-      pizza: "pizzaStore",
-      pizzaRecipe: "pizzaRecipeStore",
-    }),
+    ...mapGetters("Builder", ["pizzaTotalCost"]),
   },
 };
 </script>

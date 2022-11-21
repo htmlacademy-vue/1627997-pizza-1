@@ -4,6 +4,8 @@
       <h2 class="title title--small sheet__title">Выберите ингредиенты</h2>
 
       <div class="sheet__content ingredients">
+        <BuilderSauceSelector />
+
         <div class="ingredients__sauce">
           <p>Основной соус:</p>
 
@@ -13,7 +15,7 @@
             class="radio ingredients__input"
           >
             <RadioButton
-              name="sauce"
+              name="sauce_OLD"
               :value="sauce.id"
               :checked="pizzaRecipe.sauces.id === sauce.id"
               @change="
@@ -25,6 +27,18 @@
             />
             <span>{{ sauce.name }}</span>
           </label>
+        </div>
+
+        <div class="ingredients__filling">
+          <p>Начинка NEW:</p>
+
+          <ul class="ingredients__list">
+            <BuilderIngredientItem
+              v-for="ingredient in pizzaBuilder.ingredients"
+              :key="ingredient.id"
+              :item="ingredient"
+            />
+          </ul>
         </div>
 
         <div class="ingredients__filling">
@@ -62,6 +76,8 @@
 import RadioButton from "@/common/components/RadioButton";
 import ItemCounter from "@/common/components/ItemCounter";
 import SelectorItem from "@/common/components/SelectorItem";
+import BuilderSauceSelector from "@/modules/builder/components/BuilderSauceSelector";
+import BuilderIngredientItem from "@/modules/builder/components/BuilderIngredientItem";
 import AppDrag from "@/common/components/AppDrag";
 import { mapState, mapMutations } from "vuex";
 
@@ -72,6 +88,8 @@ export default {
     ItemCounter,
     SelectorItem,
     AppDrag,
+    BuilderSauceSelector,
+    BuilderIngredientItem,
   },
   data() {
     return {};
@@ -82,6 +100,7 @@ export default {
       pizzaRecipe: "pizzaRecipeStore",
       SAUCES_ENG_NAMES: "SAUCES_ENG_NAMES",
       INGREDIENTS_ENG_NAMES: "INGREDIENTS_ENG_NAMES",
+      pizzaBuilder: "pizzaBuilder",
     }),
   },
   methods: {

@@ -8,10 +8,16 @@ const state = () => ({
   someStateField: [],
 });
 
+const actions = {
+  async init({ dispatch }) {
+    dispatch("Builder/getPizzaBuilderComponents");
+  },
+};
+
 export default new Vuex.Store({
   state,
   getters: {},
   mutations: {},
-  actions: {},
+  actions,
   modules,
 });
