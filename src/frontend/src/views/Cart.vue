@@ -1,120 +1,22 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
-  <div class="sheet cart__empty" v-if="isCartEmpty">
-    <p>В корзине нет ни одного товара</p>
-  </div>
-
-  <form action="test.html" method="post" class="layout-form" v-else>
+  <form action="test.html" method="post" class="layout-form">
     <main class="content cart">
       <div class="container">
         <div class="cart__title">
           <h1 class="title title--big">Корзина</h1>
         </div>
 
-        <ul class="cart-list sheet">
-          <li class="cart-list__item">
-            <div class="product cart-list__product">
-              <img
-                src="@/assets/img/product.svg"
-                class="product__img"
-                width="56"
-                height="56"
-                alt="Капричоза"
-              />
-              <div class="product__text">
-                <h2>Капричоза</h2>
-                <ul>
-                  <li>30 см, на тонком тесте</li>
-                  <li>Соус: томатный</li>
-                  <li>Начинка: грибы, лук, ветчина, пармезан, ананас</li>
-                </ul>
-              </div>
-            </div>
+        <div class="sheet cart__empty" v-if="isCartEmpty">
+          <p>В корзине нет ни одного товара</p>
+        </div>
 
-            <div class="counter cart-list__counter">
-              <button
-                type="button"
-                class="counter__button counter__button--minus"
-              >
-                <span class="visually-hidden">Меньше</span>
-              </button>
-              <input
-                type="text"
-                name="counter"
-                class="counter__input"
-                value="1"
-              />
-              <button
-                type="button"
-                class="
-                  counter__button counter__button--plus counter__button--orange
-                "
-              >
-                <span class="visually-hidden">Больше</span>
-              </button>
-            </div>
-
-            <div class="cart-list__price">
-              <b>782 ₽</b>
-            </div>
-
-            <div class="cart-list__button">
-              <button type="button" class="cart-list__edit">Изменить</button>
-            </div>
-          </li>
-          <li class="cart-list__item">
-            <div class="product cart-list__product">
-              <img
-                src="@/assets/img/product.svg"
-                class="product__img"
-                width="56"
-                height="56"
-                alt="Любимая пицца"
-              />
-              <div class="product__text">
-                <h2>Любимая пицца</h2>
-                <ul>
-                  <li>30 см, на тонком тесте</li>
-                  <li>Соус: томатный</li>
-                  <li>
-                    Начинка: грибы, лук, ветчина, пармезан, ананас, бекон, блю
-                    чиз
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="counter cart-list__counter">
-              <button
-                type="button"
-                class="counter__button counter__button--minus"
-              >
-                <span class="visually-hidden">Меньше</span>
-              </button>
-              <input
-                type="text"
-                name="counter"
-                class="counter__input"
-                value="2"
-              />
-              <button
-                type="button"
-                class="
-                  counter__button counter__button--plus counter__button--orange
-                "
-              >
-                <span class="visually-hidden">Больше</span>
-              </button>
-            </div>
-
-            <div class="cart-list__price">
-              <b>782 ₽</b>
-            </div>
-
-            <div class="cart-list__button">
-              <button type="button" class="cart-list__edit">Изменить</button>
-            </div>
-          </li>
+        <ul class="cart-list sheet" v-else>
+          <CartPizzaItem
+            v-for="pizza in pizzas"
+            :key="pizza.id"
+            :item="pizza"
+          />
         </ul>
 
         <div class="cart__additional">
@@ -314,15 +216,21 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
+
+import CartPizzaItem from "@/modules/cart/CartPizzaItem";
 
 export default {
   name: "Cart",
+  components: {
+    CartPizzaItem,
+  },
   data() {
     return {};
   },
   computed: {
     ...mapGetters("Cart", ["isCartEmpty"]),
+    ...mapState("Cart", ["pizzas", "misc"]),
   },
 };
 </script>

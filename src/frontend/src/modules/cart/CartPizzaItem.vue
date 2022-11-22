@@ -1,0 +1,80 @@
+<!-- eslint-disable prettier/prettier -->
+<template>
+  <li class="cart-list__item">
+    <CartPizzaItemInfo :item="item" />
+
+    <AppItemCounter
+      class="cart-list__counter"
+      :is-orange="true"
+      :value="item.pizzaCount"
+      @change="setPizzaCount"
+    />
+
+    <div class="cart-list__price">
+      <b>{{ price }} ₽</b>
+    </div>
+
+    <div class="cart-list__button">
+      <button 
+        type="button" 
+        class="cart-list__edit" 
+        @click="changePizza"
+      >
+        Изменить
+      </button>
+    </div>
+  </li>
+</template>
+
+<script>
+import CartPizzaItemInfo from "@/modules/cart/CartPizzaItemInfo";
+import AppItemCounter from "@/common/components/AppItemCounter";
+
+//импортируем типы мутаций
+import {
+  SET_PIZZA_COUNT,
+  RESET_BUILDER_PIZZA,
+  CHANGE_PIZZA,
+} from "@/store/mutation-types";
+
+import { mapMutations, mapGetters } from "vuex";
+
+export default {
+  name: "CartPizzaItem",
+  components: { CartPizzaItemInfo, AppItemCounter },
+  props: {
+    item: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {};
+  },
+  computed: {
+    price() {
+      return this.pizzaPriceByID()(this.item.pizzaID); //как-то через жопу вышло, почему-то не получилось, как в доке
+    },
+  },
+  methods: {
+    ...mapGetters("Cart", ["pizzaPriceByID"]),
+    ...mapMutations("Cart", {
+      setCount: SET_PIZZA_COUNT,
+    }),
+    ...mapMutations("Builder", {
+      resetBuilder: RESET_BUILDER_PIZZA,
+      changePizzaRecipe: CHANGE_PIZZA,
+    }),
+    setPizzaCount({ count }) {
+      //const ob = { ...this.item, count };
+      //console.log("...into setPizzaCount", ob);
+      this.setCount({ ...this.item, count });
+    },
+    changePizza() {
+      this.resetBuilder();
+      this.changePizzaRecipe(this.item);
+      this.$router.push("/");
+    },
+  },
+};
+</script>

@@ -13,6 +13,7 @@
     <button
       type="button"
       class="counter__button counter__button--plus"
+      :class="{'counter__button--orange': isOrange}"
       @click="$emit('change', { count: 1 })"
       :disabled="buttonPlusIsDisabled"
     >
@@ -37,6 +38,10 @@ export default {
       //из пропсов
       type: Number,
       default: null,
+    },
+    isOrange: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

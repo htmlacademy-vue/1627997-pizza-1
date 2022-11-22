@@ -17,6 +17,7 @@ import {
   SET_INGREDIENT_COUNT,
   RESET_BUILDER_PIZZA,
   SET_NAME_PIZZA,
+  CHANGE_PIZZA
 } from "@/store/mutation-types";
 
 export default {
@@ -81,6 +82,47 @@ export default {
     //мутация для изменения названия пиццы
     [SET_NAME_PIZZA](state, name) {
       state.pizzaBuilder.pizzaName = name;
+    },
+    //мутация для изменения пиццы из корзины в конструкторе
+    [CHANGE_PIZZA](state, item) {
+      console.log(state, item)
+
+      const pizzaBuilderInitial = { ...state.pizzaBuilderInitial };
+
+      state.pizzaBuilder.dough = pizzaBuilderInitial.dough.map( (el) => ({
+        ...el,
+        checked: el.id === item.dough.id
+      }));
+
+      state.pizzaBuilder.sauces = pizzaBuilderInitial.sauces.map( (el) => ({
+        ...el,
+        checked: el.id === item.sauces.id
+      }));
+
+      state.pizzaBuilder.sizes = pizzaBuilderInitial.sizes.map( (el) => ({
+        ...el,
+        checked: el.id === item.sizes.id
+      }));
+
+      state.pizzaBuilder.ingredients = pizzaBuilderInitial.ingredients.map( (el) => {
+        //ищем ингредиент в объекте пиццы, пришедшем из корзины
+          //если нашли - присваиваем новый count
+
+         const ingredientInPizza = item.ingredients.find( ing => ing.id === el.id);
+
+         const newCount = (ingredientInPizza ? ingredientInPizza.count : el.count);
+
+         return {
+            ...el,
+            count: newCount
+         }
+      })
+      
+      state.pizzaBuilder.pizzaID = item.pizzaID
+      state.pizzaBuilder.pizzaName = item.pizzaName
+      state.pizzaBuilder.pizzaPrice = item.pizzaPrice
+      state.pizzaBuilder.pizzaCount = item.pizzaCount
+
     },
   },
   getters: {
