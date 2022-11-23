@@ -11,6 +11,7 @@ const state = () => ({
 const actions = {
   async init({ dispatch }) {
     dispatch("Builder/getPizzaBuilderComponents");
+    dispatch("Cart/getMiscProducts");
   },
 };
 

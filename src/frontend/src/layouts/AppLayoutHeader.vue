@@ -12,7 +12,7 @@
       </router-link>
     </div>
     <div class="header__cart">
-      <router-link to="/cart"> 0 ₽ </router-link>
+      <router-link to="/cart"> {{ cartTotalCost }} ₽ </router-link>
     </div>
     <div class="header__user">
       <router-link 
@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "AppLayoutHeader",
   data() {
@@ -55,6 +57,9 @@ export default {
       isAuthorized: false,
       //пока для тестирования работы роутинга храним состояние авторизации в компоненте
     };
+  },
+  computed: {
+    ...mapGetters("Cart", ["cartTotalCost"]),
   },
 };
 </script>
