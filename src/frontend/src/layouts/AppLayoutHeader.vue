@@ -16,7 +16,7 @@
     </div>
     <div class="header__user">
       <router-link 
-        v-if="!isAuthorized" 
+        v-if="!isAuth" 
         to="/login" 
         class="header__login"
       >
@@ -42,7 +42,7 @@
         </picture>
         <span>USERNAME</span>
       </router-link>
-      <a v-if="isAuthorized" href="/" class="header__logout"><span>Выйти</span></a>
+      <a v-if="isAuth" href="/" class="header__logout"><span>Выйти</span></a>
     </div>
   </header>
 </template>
@@ -53,13 +53,11 @@ import { mapGetters } from "vuex";
 export default {
   name: "AppLayoutHeader",
   data() {
-    return {
-      isAuthorized: false,
-      //пока для тестирования работы роутинга храним состояние авторизации в компоненте
-    };
+    return {};
   },
   computed: {
     ...mapGetters("Cart", ["cartTotalCost"]),
+    ...mapGetters("Auth", ["isAuth"]),
   },
 };
 </script>

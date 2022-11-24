@@ -25,68 +25,12 @@
           </ul>
         </div>
 
-        <div class="cart__form">
-          <div class="cart-form">
-            <label class="cart-form__select">
-              <span class="cart-form__label">Получение заказа:</span>
+        <CartDeliveryForm />
 
-              <select name="test" class="select">
-                <option value="1">Заберу сам</option>
-                <option value="2">Новый адрес</option>
-                <option value="3">Дом</option>
-              </select>
-            </label>
-
-            <label class="input input--big-label">
-              <span>Контактный телефон:</span>
-              <input type="text" name="tel" placeholder="+7 999-999-99-99" />
-            </label>
-
-            <div class="cart-form__address">
-              <span class="cart-form__label">Новый адрес:</span>
-
-              <div class="cart-form__input">
-                <label class="input">
-                  <span>Улица*</span>
-                  <input type="text" name="street" />
-                </label>
-              </div>
-
-              <div class="cart-form__input cart-form__input--small">
-                <label class="input">
-                  <span>Дом*</span>
-                  <input type="text" name="house" />
-                </label>
-              </div>
-
-              <div class="cart-form__input cart-form__input--small">
-                <label class="input">
-                  <span>Квартира</span>
-                  <input type="text" name="apartment" />
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </main>
-    <section class="footer">
-      <div class="footer__more">
-        <a href="#" class="button button--border button--arrow"
-          >Хочу еще одну</a
-        >
-      </div>
-      <p class="footer__text">
-        Перейти к конструктору<br />чтоб собрать ещё одну пиццу
-      </p>
-      <div class="footer__price">
-        <b>Итого: {{ cartTotalCost }} ₽</b>
-      </div>
-
-      <div class="footer__submit">
-        <button type="submit" class="button">Оформить заказ</button>
-      </div>
-    </section>
+    
+    <CartFooter />
   </form>
 </template>
 
@@ -95,12 +39,16 @@ import { mapGetters, mapState } from "vuex";
 
 import CartPizzaItem from "@/modules/cart/CartPizzaItem";
 import CartMiscItem from "@/modules/cart/CartMiscItem";
+import CartDeliveryForm from "@/modules/cart/CartDeliveryForm";
+import CartFooter from "@/modules/cart/CartFooter";
 
 export default {
   name: "Cart",
   components: {
     CartPizzaItem,
     CartMiscItem,
+    CartDeliveryForm,
+    CartFooter,
   },
   data() {
     return {};
@@ -108,6 +56,7 @@ export default {
   computed: {
     ...mapGetters("Cart", ["isCartEmpty", "cartTotalCost"]),
     ...mapState("Cart", ["pizzas", "misc"]),
+    ...mapGetters("Auth", ["isAuth"]),
   },
 };
 </script>

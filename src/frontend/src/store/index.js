@@ -12,6 +12,15 @@ const actions = {
   async init({ dispatch }) {
     dispatch("Builder/getPizzaBuilderComponents");
     dispatch("Cart/getMiscProducts");
+
+    //неавторизован
+    // dispatch("Auth/setUserNonAuth");
+
+    //авторизован
+    dispatch("Auth/getUser");
+
+    //получаем адреса
+    dispatch("Addresses/getAddresses");
   },
 };
 
