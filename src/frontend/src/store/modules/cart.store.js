@@ -6,7 +6,7 @@ import pizzaStore from "@/static/pizza.json";
 import { createRandomID } from "@/common/helpers";
 
 //импортируем типы мутаций
-import { SET_PIZZA_COUNT, SET_MISC_COUNT } from "@/store/mutation-types";
+import { SET_PIZZA_COUNT, SET_MISC_COUNT,CLEAR_CART } from "@/store/mutation-types";
 
 export default {
   namespaced: true,
@@ -15,6 +15,7 @@ export default {
     pizzaStore,
     pizzas: [],
     misc: [],
+    miscInitial: [],
   },
   getters: {
     isCartEmpty: (state) => !state.pizzas.length,
@@ -34,6 +35,16 @@ export default {
       }, 0);
 
       return pizzasTotalCost + miscTotalCost;
+    },
+    miscProductsDataExtended: (state) => {
+      //расширяем объекты доп продуктов
+      const miscProductsDataExtended = state.miscStore
+        .map((el) => ({
+          ...el,
+          count: 0,
+      }));
+      
+      return miscProductsDataExtended;
     }
   },
   actions: {
@@ -41,16 +52,13 @@ export default {
       commit("addNewPizzaToCart", rootGetters["Builder/pizzaTotalRecipe"]);
     },
     //сейчас это просто функция, обрабатывающая данные из json файла, дальше будет получение с сервера
-    getMiscProducts: ({ state, commit }) => {
+    getMiscProducts: ({ commit, getters }) => {
       //расширяем объекты доп продуктов
-      const miscProductsDataExtended = state.miscStore
-        .map((el) => ({
-          ...el,
-          count: 0,
-      }));
+      const miscProductsDataExtended = getters.miscProductsDataExtended;
 
       //записываем в стэйт
       commit("setMiscProducts", miscProductsDataExtended);
+      commit("setMiscProductsInitial", miscProductsDataExtended);
     },
   },
   mutations: {
@@ -95,6 +103,13 @@ export default {
     //мутация для установки дополнительных продуктов
     setMiscProducts: (state, payload) => {
       state.misc = [...payload];
+    },
+    setMiscProductsInitial: (state, payload) => {
+      state.miscInitial = [...payload];
+    },
+    [CLEAR_CART](state) {
+      state.pizzas = [];
+      state.misc = [...state.miscInitial];
     },
     //мутация для кол-ва дополнительных продуктов
     [SET_MISC_COUNT](state, item) {
