@@ -1,5 +1,5 @@
 <template>
-  <AppDrop @drop="changeIngredientCount">
+  <AppDrop @drop="drop">
     <div class="content__pizza">
       <label class="input">
         <span class="visually-hidden">Название пиццы2</span>
@@ -7,8 +7,7 @@
           type="text"
           name="pizza_name"
           placeholder="Введите название пиццы"
-          :value="value"
-          @input="$emit('input', $event.target.value)"
+          v-model="pizzaName"
         />
       </label>
 
@@ -16,10 +15,10 @@
         <div class="pizza" :class="doughSauceResultClass">
           <div class="pizza__wrapper">
             <div
-              v-for="ingredient in pizzaRecipe.ingredients"
+              v-for="ingredient in ingredientsSelected"
               :key="ingredient.id"
               :class="[
-                `pizza__filling--${INGREDIENTS_ENG_NAMES[ingredient.id]}`,
+                `pizza__filling--${ingredient.value}`,
                 {
                   'pizza__filling--second': ingredient.count === 2,
                   'pizza__filling--third': ingredient.count === 3,
@@ -32,8 +31,13 @@
       </div>
 
       <div class="content__result">
-        <BuilderPriceCounter :pizza="pizza" :pizza-recipe="pizzaRecipe" />
-        <button type="button" class="button" :disabled="cookButtonIsDisabled">
+        <BuilderPriceCounter />
+        <button
+          type="button"
+          class="button"
+          :disabled="!pizzaRecipeIsReady"
+          @click="addToCartAndResetBuilder"
+        >
           Готовьте!
         </button>
       </div>
@@ -42,68 +46,73 @@
 </template>
 
 <script>
-//импортируем константы
-import {
-  PIZZA_SIZES,
-  INGREDIENTS_ENG_NAMES,
-  SAUCES_ENG_NAMES,
-  DOUGH_TYPES,
-} from "@/common/constants";
-
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
 import AppDrop from "@/common/components/AppDrop";
 
+import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
+import { SET_NAME_PIZZA, RESET_BUILDER_PIZZA } from "@/store/mutation-types";
+
 export default {
   name: "BuilderPizzaView",
-  props: {
-    pizza: {
-      type: Object,
-      required: true,
-    },
-    pizzaRecipe: {
-      type: Object,
-      required: true,
-    },
-    value: {
-      type: String,
-      required: true,
-    },
-  },
   data() {
-    return {
-      PIZZA_SIZES,
-      INGREDIENTS_ENG_NAMES,
-      SAUCES_ENG_NAMES,
-      DOUGH_TYPES,
-    };
+    return {};
   },
   components: {
     BuilderPriceCounter,
     AppDrop,
   },
   computed: {
+    ...mapState("Builder", {
+      pizzaBuilder: "pizzaBuilder",
+    }),
+    ...mapGetters("Builder", [
+      "pizzaRecipeIsReady",
+      "ingredientsSelected",
+      "doughSelected",
+      "sizeSelected",
+      "sauceSelected",
+    ]),
+    pizzaName: {
+      //сделал, как в документации для v-model двунаправленное вычисляемое свойство
+      get() {
+        return this.pizzaBuilder.pizzaName;
+      },
+      set(value) {
+        this.setPizzaName(value);
+      },
+    },
+
     //вычисляем css классы для теста и соуса
     doughClass() {
       //тут в ТЗ разные английские названия классов, в BuilderDoughSelector модификатор --light\large, а здесь --big\small
-      return this.pizzaRecipe.dough.id === 1 ? "small" : "big";
+      return this.doughSelected.value === "light" ? "small" : "big";
     },
     sauceClass() {
-      return this.SAUCES_ENG_NAMES[this.pizzaRecipe.sauces.id];
+      return this.sauceSelected.value;
     },
     doughSauceResultClass() {
       return `pizza--foundation--${this.doughClass}-${this.sauceClass}`;
     },
     cookButtonIsDisabled() {
-      return !this.value.length || !this.pizzaRecipe.ingredients.length;
+      return !this.pizzaName.length || !this.pizzaRecipe.ingredients.length;
     },
   },
   methods: {
-    changeIngredientCount({ id }) {
-      this.$emit("pizza-param-changed", {
-        pizzaParam: "ingredients",
-        id,
-        count: 1,
-      });
+    //новое действие для Drag-n-Drop
+    ...mapActions("Builder", {
+      drop: "dropIngredient",
+    }),
+    //новая мутация - устанока имени пиццы
+    ...mapMutations("Builder", {
+      setPizzaName: SET_NAME_PIZZA,
+      resetPizzaBuilder: RESET_BUILDER_PIZZA,
+    }),
+    //новое действие для добавления в корзину
+    ...mapActions("Cart", ["addNewPizzaToCartAction"]),
+    //метод, который вызовет 2 экшена: добавление в корзину + сброс конструктора
+    addToCartAndResetBuilder() {
+      this.addNewPizzaToCartAction();
+      this.resetPizzaBuilder();
     },
   },
 };

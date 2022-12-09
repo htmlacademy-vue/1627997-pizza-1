@@ -1,0 +1,101 @@
+[33mcommit a34d1c84eb21f7baecf17aede9b21c6876a8eae8[m[33m ([m[1;36mHEAD -> [m[1;32mmodule4-task1[m[33m, [m[1;31morigin/module4-task1[m[33m)[m
+Author: woodward42 <andrey.ivanov.5891@gmail.com>
+Date:   Fri Nov 18 13:59:23 2022 +0300
+
+    Добавил статическую верстку на страницу Корзины + добавление пиццы в корзину
+
+[33mcommit 39f2357af51a3cd06a39705353469b2cff73e927[m
+Author: woodward42 <andrey.ivanov.5891@gmail.com>
+Date:   Thu Nov 17 16:50:50 2022 +0300
+
+    Создал хранилище + перенес данные модуля Builder в Vuex (state, getters, mutations
+
+[33mcommit dc309a78b249f7b073384aeaeef2a36cd632ab35[m[33m ([m[1;31morigin/module3-task1[m[33m, [m[1;32mmodule3-task1[m[33m)[m
+Author: woodward42 <andrey.ivanov.5891@gmail.com>
+Date:   Wed Oct 26 14:24:26 2022 +0300
+
+    Сделал рефакторинг Index, добавил лейауты и рабочий роутер
+
+[33mcommit a72122b9111187a07a1cf6c782dd1c3738ac74d7[m
+Author: woodward42 <andrey.ivanov.5891@gmail.com>
+Date:   Mon Oct 24 16:04:52 2022 +0300
+
+    Добавил базовый роутер и страницы-заглушки
+
+[33mcommit ddb7d995e482cd810f5b034ce5548424795172ae[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;31macademy/master[m[33m, [m[1;32mmaster[m[33m)[m
+Merge: 9e60043 412c644
+Author: Unknown Keks <keksobot@users.noreply.github.com>
+Date:   Fri Oct 7 11:33:41 2022 +0300
+
+    Merge pull request #2 from woodward42/module2-task1
+
+[33mcommit 412c644ab122c44762b0f926065b02488c1da534[m[33m ([m[1;31morigin/module2-task1[m[33m, [m[1;32mmodule2-task1[m[33m)[m
+Author: woodward42 <andrey.ivanov.5891@gmail.com>
+Date:   Fri Sep 30 13:52:42 2022 +0300
+
+    Drag-n-Drop готов. Добавил новый компонент, который оборачивали в AppDrag-AppDrop.
+
+[33mcommit dc22aa38c71524dfd3e61ee4b4f025bc98e6dae2[m
+Author: woodward42 <andrey.ivanov.5891@gmail.com>
+Date:   Thu Sep 29 11:54:23 2022 +0300
+
+    Реализовал подсчет цены + ввод названия пиццы + кнопку Готовьте. Остался только drag-n-Drop
+
+[33mcommit 892b7df64d65cdbab0fa25445f1bed1030c38372[m
+Author: woodward42 <andrey.ivanov.5891@gmail.com>
+Date:   Wed Sep 28 15:02:13 2022 +0300
+
+    Добавлены общие компоненты + компоненты модуля билдер. Реализован проброс данных в родителя и передача пропсами в дочерние компоненты.
+
+[33mcommit 9e60043cd1487094d33ee4e6185fc0e0a54eb10d[m
+Merge: 6f4c4d8 accf4cf
+Author: Unknown Keks <keksobot@users.noreply.github.com>
+Date:   Fri Sep 23 16:10:28 2022 +0300
+
+    Merge pull request #1 from woodward42/module1-task1
+
+[33mcommit accf4cf7452023f8acdeb7a03bdefc2ca86789ad[m[33m ([m[1;31morigin/module1-task1[m[33m)[m
+Author: woodward42 <andrey.ivanov.5891@gmail.com>
+Date:   Fri Sep 23 16:07:01 2022 +0300
+
+    Скорректировал словари в константах. В v-model обращение к словарям исправлено на id
+
+[33mcommit c0eba3bf625732a32530fb85ee41a137e87f4caf[m
+Author: woodward42 <andrey.ivanov.5891@gmail.com>
+Date:   Wed Sep 21 14:46:48 2022 +0300
+
+    Первое задание готово
+
+[33mcommit 97e1e320da053e612b658415ed560792d761b3a5[m
+Author: woodward42 <andrey.ivanov.5891@gmail.com>
+Date:   Tue Sep 20 16:19:22 2022 +0300
+
+    в template/package.json исправлена версия на "gulp-sass": "^5.1.0"
+
+[33mcommit d84e9ea120db666948dd8e60b02d5f7632a19ff5[m
+Author: woodward42 <67097178+woodward42@users.noreply.github.com>
+Date:   Tue Sep 20 15:52:55 2022 +0300
+
+    Update gulpfile.js
+    
+    Добавлено: (require('sass'))
+
+[33mcommit feeb04bf04dfead37083509e0de5fc256d3ea87f[m
+Author: woodward42 <67097178+woodward42@users.noreply.github.com>
+Date:   Tue Sep 20 15:51:56 2022 +0300
+
+    Update package.json
+    
+    Добавлена "sass": "^1.53.0"
+
+[33mcommit 6977109ad0e5363e7b28ed9c47d3faff6652c733[m
+Author: woodward42 <67097178+woodward42@users.noreply.github.com>
+Date:   Tue Sep 20 15:50:12 2022 +0300
+
+    Update package.json
+
+[33mcommit 6f4c4d8c0ddc377af332d9e39b84d8f93dbab803[m
+Author: Keks <keks@htmlacademy.ru>
+Date:   Fri Sep 16 12:15:25 2022 +0300
+
+    :cat:
