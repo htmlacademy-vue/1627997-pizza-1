@@ -9,7 +9,7 @@
     <div class="additional-list__wrapper">
       <AppItemCounter
         class="additional-list__counter"
-        :is-orange="true"
+        :button-theme="{orange: true}"
         :value="item.count"
         @change="setMiscCount"
       />

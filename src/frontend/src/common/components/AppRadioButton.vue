@@ -1,10 +1,10 @@
 <template>
   <input
+    v-bind="$attrs"
     type="radio"
     :name="params.type"
     :value="params.value"
     :checked="params.checked"
-    v-bind="$attrs"
     @change="$emit('selected')"
   />
 </template>

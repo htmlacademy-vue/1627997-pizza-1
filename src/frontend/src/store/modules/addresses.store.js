@@ -3,7 +3,7 @@ import addressesStore from "@/static/addresses.json";
 
 //импортируем типы мутаций
 import {
-  GET_ADDRESSES,
+  SET_ADDRESSES,
   CLEAR_DELIVERY_FORM,
   SET_DELIVERY_TYPE,
   SET_DELIVERY_PHONE,
@@ -36,7 +36,7 @@ export default {
   },
   getters: {},
   mutations: {
-    [GET_ADDRESSES](state, addresses) {
+    [SET_ADDRESSES](state, addresses) {
       state.addresses = [...addresses];
     },
     [CLEAR_DELIVERY_FORM](state) {
@@ -73,7 +73,7 @@ export default {
   actions: {
     //имитируем получение адресов текущего пользователя, пока json, дальше будет по api с бэка
     getAddresses({ state, commit }) {
-      commit(GET_ADDRESSES, [...state.addressesStore]);
+      commit(SET_ADDRESSES, [...state.addressesStore]);
     },
   },
 };

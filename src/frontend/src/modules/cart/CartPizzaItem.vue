@@ -5,7 +5,7 @@
 
     <AppItemCounter
       class="cart-list__counter"
-      :is-orange="true"
+      :button-theme="{orange: true}"
       :value="item.pizzaCount"
       @change="setPizzaCount"
     />
@@ -52,12 +52,12 @@ export default {
     return {};
   },
   computed: {
+    ...mapGetters("Cart", ["pizzaPriceByID"]),
     price() {
-      return this.pizzaPriceByID()(this.item.pizzaID); //как-то через жопу вышло, почему-то не получилось, как в доке
+      return this.pizzaPriceByID(this.item.pizzaID);
     },
   },
   methods: {
-    ...mapGetters("Cart", ["pizzaPriceByID"]),
     ...mapMutations("Cart", {
       setCount: SET_PIZZA_COUNT,
     }),

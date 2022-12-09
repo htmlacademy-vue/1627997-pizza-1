@@ -10,7 +10,7 @@ export const SET_PIZZA_COUNT = "SET_PIZZA_COUNT"; //мутация для изм
 export const CHANGE_PIZZA = "CHANGE_PIZZA"; //мутация для изменения пиццы из корзины в конструкторе
 export const SET_MISC_COUNT = "SET_MISC_COUNT"; //мутация для изменения кол-ва доп. товара в корзине
 
-export const GET_ADDRESSES = "GET_ADDRESSES"; //мутация для изменения кол-ва доп. товара в корзине
+export const SET_ADDRESSES = "SET_ADDRESSES";
 export const CLEAR_DELIVERY_FORM = "CLEAR_DELIVERY_FORM"; //мутация для очистки формы доставки
 export const SET_DELIVERY_TYPE = "SET_DELIVERY_TYPE"; //мутация для изменения типа доставки
 export const SET_DELIVERY_PHONE = "SET_DELIVERY_PHONE"; //мутация для изменения телефона

@@ -13,7 +13,7 @@
     <button
       type="button"
       class="counter__button counter__button--plus"
-      :class="{'counter__button--orange': isOrange}"
+      :class="buttonClassObject"
       @click="$emit('change', { count: 1 })"
       :disabled="buttonPlusIsDisabled"
     >
@@ -39,9 +39,9 @@ export default {
       type: Number,
       default: null,
     },
-    isOrange: {
-      type: Boolean,
-      default: false,
+    buttonTheme: {
+      type: Object,
+      default: () => {},
     },
   },
   data() {
@@ -53,6 +53,11 @@ export default {
     },
     buttonPlusIsDisabled() {
       return this.max === null ? false : this.value >= this.max;
+    },
+    buttonClassObject() {
+      return {
+        "counter__button--orange": this.buttonTheme?.orange,
+      };
     },
   },
 };
