@@ -14,6 +14,8 @@ export default {
   },
   created() {
     this.$store.dispatch("init");
+    console.dir(this.$store);
+    // console.dir(this);
   },
 };
 </script>

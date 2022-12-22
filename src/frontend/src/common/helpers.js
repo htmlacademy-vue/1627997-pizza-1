@@ -13,3 +13,10 @@ export const deliveryTypes = () => [
     name: "Новый адрес",
   },
 ];
+
+//функиця, создающая объект с инстансами для api
+export const createResources = () => {
+  return {
+    a: "42",
+  };
+};
