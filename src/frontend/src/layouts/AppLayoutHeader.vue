@@ -33,22 +33,28 @@
             srcset="@/assets/img/users/user5.webp 1x, @/assets/img/users/user5@2x.webp 2x"
           />
           <img
-            src="@/assets/img/users/user5.jpg"
+            :src="user.avatar"
             srcset="@/assets/img/users/user5@2x.jpg"
-            alt="Василий Ложкин"
+            alt="user.name"
             width="32"
             height="32"
           />
         </picture>
-        <span>USERNAME</span>
+        <span>{{ user.name }}</span>
       </router-link>
-      <a v-if="isAuth" href="/" class="header__logout"><span>Выйти</span></a>
+      <a 
+        v-if="isAuth" 
+        class="header__logout"
+        @click.prevent="logMeOut"
+      >
+        <span>Выйти</span>
+      </a>
     </div>
   </header>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState, mapActions } from "vuex";
 
 export default {
   name: "AppLayoutHeader",
@@ -58,6 +64,14 @@ export default {
   computed: {
     ...mapGetters("Cart", ["cartTotalCost"]),
     ...mapGetters("Auth", ["isAuth"]),
+    ...mapState("Auth", ["user"]),
+  },
+  methods: {
+    ...mapActions("Auth", ["logout"]),
+    async logMeOut() {
+      await this.logout();
+      //await this.$router.push("/");
+    },
   },
 };
 </script>
