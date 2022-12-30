@@ -5,6 +5,8 @@ import {
   AuthApiService,
 } from "@/services/api.service";
 
+import { BuilderApiService } from "@/services/api.builder.service";
+
 import resources from "@/common/enums/resources";
 
 export const createRandomID = () => {
@@ -30,6 +32,12 @@ export const createResources = () => {
     [resources.MISC]: new ReadOnlyApiService("misc"),
     [resources.ADDRESSES]: new CrudApiService("addresses"),
     [resources.ORDERS]: new CrudApiService("orders"),
+    [resources.BUILDER]: new BuilderApiService([
+      resources.DOUGH,
+      resources.SIZES,
+      resources.SAUCES,
+      resources.INGREDIENTS,
+    ]),
   };
 };
 

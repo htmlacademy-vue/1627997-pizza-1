@@ -3,7 +3,6 @@ import JwtService from "@/services/jwt.service";
 
 //console.log(axios);
 //console.log(JwtService);
-//@TODO - импортировать в helpers.js
 
 //запрос на чтение-получение
 export class ReadOnlyApiService {

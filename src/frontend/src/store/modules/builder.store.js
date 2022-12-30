@@ -1,15 +1,6 @@
 /* eslint-disable prettier/prettier */
 //импортируем статику
 import miscStore from "@/static/misc.json";
-import pizzaStore from "@/static/pizza.json";
-
-//импортируем константы
-import {
-  PIZZA_SIZES,
-  INGREDIENTS_ENG_NAMES,
-  SAUCES_ENG_NAMES,
-  DOUGH_TYPES,
-} from "@/common/constants";
 
 //импортируем типы мутаций
 import {
@@ -17,18 +8,13 @@ import {
   SET_INGREDIENT_COUNT,
   RESET_BUILDER_PIZZA,
   SET_NAME_PIZZA,
-  CHANGE_PIZZA
+  CHANGE_PIZZA,
 } from "@/store/mutation-types";
 
 export default {
   namespaced: true,
   state: {
     miscStore,
-    pizzaStore,
-    PIZZA_SIZES,
-    INGREDIENTS_ENG_NAMES,
-    SAUCES_ENG_NAMES,
-    DOUGH_TYPES,
     pizzaBuilder: {
       //сейчас это просто из json файла, дальше будет получение с сервера
       pizzaID: null,
@@ -46,8 +32,8 @@ export default {
     //==============================================================================
     //инициализация основного объекта конструктора
     setPizzaBuilderComponents: (state, payload) => {
-      state.pizzaBuilder = { ...payload };
-      state.pizzaBuilderInitial = payload;
+      state.pizzaBuilder = { ...state.pizzaBuilder, ...payload };
+      state.pizzaBuilderInitial = { ...payload };
     },
     //мутация для радиокнопок, в item есть свойство type: [dough, sizes, sauces]
     [SET_SELECTOR_ITEM](state, item) {
@@ -77,7 +63,13 @@ export default {
     },
     //мутация для сброса данных в конструкторе
     [RESET_BUILDER_PIZZA](state) {
-      state.pizzaBuilder = { ...state.pizzaBuilderInitial };
+      state.pizzaBuilder = {
+        ...state.pizzaBuilderInitial,
+        pizzaID: null,
+        pizzaName: "",
+        pizzaPrice: null,
+        pizzaCount: null,
+      };
     },
     //мутация для изменения названия пиццы
     [SET_NAME_PIZZA](state, name) {
@@ -85,44 +77,49 @@ export default {
     },
     //мутация для изменения пиццы из корзины в конструкторе
     [CHANGE_PIZZA](state, item) {
-      console.log(state, item)
+      //console.log(state, item);
 
       const pizzaBuilderInitial = { ...state.pizzaBuilderInitial };
 
-      state.pizzaBuilder.dough = pizzaBuilderInitial.dough.map( (el) => ({
+      state.pizzaBuilder.dough = pizzaBuilderInitial.dough.map((el) => ({
         ...el,
-        checked: el.id === item.dough.id
+        checked: el.id === item.dough.id,
       }));
 
-      state.pizzaBuilder.sauces = pizzaBuilderInitial.sauces.map( (el) => ({
+      state.pizzaBuilder.sauces = pizzaBuilderInitial.sauces.map((el) => ({
         ...el,
-        checked: el.id === item.sauces.id
+        checked: el.id === item.sauces.id,
       }));
 
-      state.pizzaBuilder.sizes = pizzaBuilderInitial.sizes.map( (el) => ({
+      state.pizzaBuilder.sizes = pizzaBuilderInitial.sizes.map((el) => ({
         ...el,
-        checked: el.id === item.sizes.id
+        checked: el.id === item.sizes.id,
       }));
 
-      state.pizzaBuilder.ingredients = pizzaBuilderInitial.ingredients.map( (el) => {
-        //ищем ингредиент в объекте пиццы, пришедшем из корзины
+      state.pizzaBuilder.ingredients = pizzaBuilderInitial.ingredients.map(
+        (el) => {
+          //ищем ингредиент в объекте пиццы, пришедшем из корзины
           //если нашли - присваиваем новый count
 
-         const ingredientInPizza = item.ingredients.find( ing => ing.id === el.id);
+          const ingredientInPizza = item.ingredients.find(
+            (ing) => ing.id === el.id
+          );
 
-         const newCount = (ingredientInPizza ? ingredientInPizza.count : el.count);
+          const newCount = ingredientInPizza
+            ? ingredientInPizza.count
+            : el.count;
 
-         return {
+          return {
             ...el,
-            count: newCount
-         }
-      })
-      
-      state.pizzaBuilder.pizzaID = item.pizzaID
-      state.pizzaBuilder.pizzaName = item.pizzaName
-      state.pizzaBuilder.pizzaPrice = item.pizzaPrice
-      state.pizzaBuilder.pizzaCount = item.pizzaCount
+            count: newCount,
+          };
+        }
+      );
 
+      state.pizzaBuilder.pizzaID = item.pizzaID;
+      state.pizzaBuilder.pizzaName = item.pizzaName;
+      state.pizzaBuilder.pizzaPrice = item.pizzaPrice;
+      state.pizzaBuilder.pizzaCount = item.pizzaCount;
     },
   },
   getters: {
@@ -186,39 +183,10 @@ export default {
     }),
   },
   actions: {
-    //сейчас это просто функция, обрабатывающая данные из json файла, дальше будет получение с сервера
-    getPizzaBuilderComponents: ({ state, commit }) => {
-      //расширяем объекты теста, размера, соуса, ингредиентов, чтобы использовать это в компонентах
-      const pizzaBuilderDataExtended = {
-        pizzaID: null,
-        pizzaName: "",
-        pizzaPrice: null,
-        pizzaCount: null,
-        dough: state.pizzaStore.dough.map((dough, idx) => ({
-          ...dough,
-          type: "dough",
-          value: DOUGH_TYPES[dough.id],
-          checked: idx === 0,
-        })),
-        sauces: state.pizzaStore.sauces.map((sauce, idx) => ({
-          ...sauce,
-          type: "sauces",
-          value: SAUCES_ENG_NAMES[sauce.id],
-          checked: idx === 0,
-        })),
-        sizes: state.pizzaStore.sizes.map((size, idx) => ({
-          ...size,
-          type: "sizes",
-          value: PIZZA_SIZES[size.id],
-          checked: idx === 0,
-        })),
-        ingredients: state.pizzaStore.ingredients.map((ingredient) => ({
-          ...ingredient,
-          type: "ingredients",
-          value: INGREDIENTS_ENG_NAMES[ingredient.id],
-          count: 0,
-        })),
-      };
+    //функция получения элементов конструктора с бэка
+    async getPizzaBuilderComponents({ commit }) {
+      const pizzaBuilderDataExtended = await this.$api.builder.getBuilderData();
+      // console.log(pizzaBuilderDataExtended);
 
       //записываем в стэйт
       commit("setPizzaBuilderComponents", pizzaBuilderDataExtended);

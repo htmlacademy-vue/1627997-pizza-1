@@ -16,8 +16,9 @@ const actions = {
     if (this.$jwt.getToken()) {
       setAuth(this);
     }
-
+    //данные для конструктора с бэка
     dispatch("Builder/getPizzaBuilderComponents");
+    //dispatch("Builder/getPizzaBuilderComponentsOLD");
     dispatch("Cart/getMiscProducts");
 
     //получаем адреса
