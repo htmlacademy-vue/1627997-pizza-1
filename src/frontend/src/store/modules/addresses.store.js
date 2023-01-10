@@ -1,5 +1,6 @@
+/* eslint-disable prettier/prettier */
 //импортируем статику
-import addressesStore from "@/static/addresses.json";
+//import addressesStore from "@/static/addresses.json";
 
 //импортируем типы мутаций
 import {
@@ -24,7 +25,7 @@ const deliveryFormDataInitial = () => ({
 export default {
   namespaced: true,
   state: {
-    addressesStore,
+    //addressesStore,
     addresses: [],
     deliveryFormData: {
       phone: "",
@@ -37,7 +38,7 @@ export default {
   getters: {},
   mutations: {
     [SET_ADDRESSES](state, addresses) {
-      state.addresses = [...addresses];
+      state.addresses = addresses;
     },
     [CLEAR_DELIVERY_FORM](state) {
       state.deliveryType = deliveryTypeDefault;
@@ -53,7 +54,6 @@ export default {
         state.deliveryFormData.street = "";
         state.deliveryFormData.building = "";
         state.deliveryFormData.flat = "";
-        // eslint-disable-next-line prettier/prettier
       } 
       else if (value !== "self") {
         const address = state.addresses.find((el) => el.id === value);
@@ -71,9 +71,20 @@ export default {
     },
   },
   actions: {
-    //имитируем получение адресов текущего пользователя, пока json, дальше будет по api с бэка
-    getAddresses({ state, commit }) {
-      commit(SET_ADDRESSES, [...state.addressesStore]);
+    //получение адресов по api с бэка
+    async getAddresses({ commit, rootGetters }) {
+      //если авторизован
+      if (rootGetters["Auth/isAuth"]) {
+        const data = await this.$api.addresses.query();
+          console.log("getAddresses isAuth");
+        
+        commit(SET_ADDRESSES, data);
+
+      } else {
+          console.log("getAddresses NOT isAuth");
+
+        commit(SET_ADDRESSES, []);
+      }
     },
   },
 };

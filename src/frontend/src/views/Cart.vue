@@ -26,20 +26,16 @@
         </div>
 
         <CartDeliveryForm />
-
       </div>
     </main>
-    
-    <CartFooter @openPopup="openPopup"/>
-    <OrderPopup 
-      @closePopup="closePopup"
-      v-if="showPopup"
-    />
+
+    <CartFooter @openPopup="openPopup" />
+    <OrderPopup @closePopup="closePopup" v-if="showPopup" />
   </form>
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters, mapState, mapActions } from "vuex";
 
 import CartPizzaItem from "@/modules/cart/CartPizzaItem";
 import CartMiscItem from "@/modules/cart/CartMiscItem";
@@ -61,12 +57,17 @@ export default {
       showPopup: false,
     };
   },
+  created() {
+    console.log("Cart.vue is created");
+    this.getAddresses();
+  },
   computed: {
     ...mapGetters("Cart", ["isCartEmpty", "cartTotalCost"]),
     ...mapState("Cart", ["pizzas", "misc"]),
     ...mapGetters("Auth", ["isAuth"]),
   },
   methods: {
+    ...mapActions("Addresses", ["getAddresses"]),
     openPopup() {
       this.showPopup = true;
     },

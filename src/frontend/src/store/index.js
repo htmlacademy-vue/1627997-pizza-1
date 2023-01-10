@@ -18,11 +18,10 @@ const actions = {
     }
     //данные для конструктора с бэка
     dispatch("Builder/getPizzaBuilderComponents");
-    //dispatch("Builder/getPizzaBuilderComponentsOLD");
     dispatch("Cart/getMiscProducts");
 
     //получаем адреса
-    dispatch("Addresses/getAddresses");
+    //dispatch("Addresses/getAddresses"); - переедет в Cart и Profile
   },
 };
 

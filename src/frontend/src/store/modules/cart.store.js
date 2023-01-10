@@ -36,25 +36,20 @@ export default {
 
       return pizzasTotalCost + miscTotalCost;
     },
-    miscProductsDataExtended: (state) => {
-      //расширяем объекты доп продуктов
-      const miscProductsDataExtended = state.miscStore
-        .map((el) => ({
-          ...el,
-          count: 0,
-      }));
-      
-      return miscProductsDataExtended;
-    }
   },
   actions: {
     addNewPizzaToCartAction({ commit, rootGetters }) {
       commit("addNewPizzaToCart", rootGetters["Builder/pizzaTotalRecipe"]);
     },
-    //сейчас это просто функция, обрабатывающая данные из json файла, дальше будет получение с сервера
-    getMiscProducts: ({ commit, getters }) => {
+    //получаем доп товары с бэка
+    async getMiscProducts({commit}) {
+      const data = await this.$api.misc.query();
+
       //расширяем объекты доп продуктов
-      const miscProductsDataExtended = getters.miscProductsDataExtended;
+      const miscProductsDataExtended = data.map((el) => ({
+              ...el,
+             count: 0,
+          }));
 
       //записываем в стэйт
       commit("setMiscProducts", miscProductsDataExtended);
