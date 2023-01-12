@@ -44,7 +44,7 @@ export default {
   },
   props: {
     misc: {
-      type: Object,
+      type: Array,
       required: true,
     },
   },

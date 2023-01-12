@@ -17,3 +17,5 @@ export const SET_DELIVERY_PHONE = "SET_DELIVERY_PHONE"; //мутация для 
 export const SET_DELIVERY_FIELD = "SET_DELIVERY_FIELD"; //мутация для изменения полей формы доставки
 export const CLEAR_CART = "CLEAR_CART"; //мутация для очистки корзины.
 export const LOGOUT_USER = "LOGOUT_USER"; //мутация для логаута
+
+export const SET_ORDERS = "SET_ORDERS"; //мутация для получения заказов

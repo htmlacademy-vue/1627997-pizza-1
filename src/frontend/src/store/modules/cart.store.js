@@ -1,8 +1,4 @@
 /* eslint-disable prettier/prettier */
-//импортируем статику
-import miscStore from "@/static/misc.json";
-import pizzaStore from "@/static/pizza.json";
-
 import { createRandomID } from "@/common/helpers";
 
 //импортируем типы мутаций
@@ -11,8 +7,6 @@ import { SET_PIZZA_COUNT, SET_MISC_COUNT,CLEAR_CART } from "@/store/mutation-typ
 export default {
   namespaced: true,
   state: {
-    miscStore,
-    pizzaStore,
     pizzas: [],
     misc: [],
     miscInitial: [],

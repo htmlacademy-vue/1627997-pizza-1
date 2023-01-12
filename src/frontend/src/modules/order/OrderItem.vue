@@ -1,9 +1,10 @@
 <template>
   <section class="sheet order">
     <OrderHeadingInfo :order="order" />
-    <OrderPizzas :pizzas="order.pizzas" />
-    <OrderMisc :misc="order.misc" />
-    <OrderAddress :address="order.address" />
+    <OrderPizzas :pizzas="order.orderPizzasNormalized" />
+    <OrderMisc :misc="order.orderMiscNormalized" />
+    <OrderAddress :address="order.orderAddress" />
+    {{ order.orderTotalPrice }}
   </section>
 </template>
 

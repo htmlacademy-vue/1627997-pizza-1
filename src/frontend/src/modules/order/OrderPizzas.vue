@@ -55,7 +55,7 @@ export default {
   },
   props: {
     pizzas: {
-      type: Object,
+      type: Array,
       required: true,
     },
   },

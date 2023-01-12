@@ -5,7 +5,11 @@
       <h1 class="title title--big">История заказов</h1>
     </div>
 
-    <OrderItem :order="fakeOrder" />
+    <OrderItem 
+      v-for="order in getOrdersExtended"
+      :key="order.orderId"
+      :order="order"  
+    />
 
     <section class="sheet order">
       <div class="order__wrapper">
@@ -118,6 +122,9 @@
 
 <script>
 import OrderItem from "@/modules/order/OrderItem";
+
+import { mapActions, mapGetters, mapState } from "vuex";
+
 export default {
   name: "Orders",
   data() {
@@ -168,6 +175,16 @@ export default {
   },
   components: {
     OrderItem,
+  },
+  methods: {
+    ...mapActions("Orders", ["getOrders"]),
+  },
+  computed: {
+    ...mapGetters("Orders", ["getOrdersExtended"]),
+    ...mapState("Orders", ["orders"]),
+  },
+  created() {
+    this.getOrders();
   },
 };
 </script>

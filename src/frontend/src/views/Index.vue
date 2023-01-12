@@ -40,7 +40,8 @@ export default {
   },
   methods: {
     async runCode() {
-      // console.log(some);
+      // const data = await this.$api.orders.query();
+      // console.dir(data);
     },
   },
 };
