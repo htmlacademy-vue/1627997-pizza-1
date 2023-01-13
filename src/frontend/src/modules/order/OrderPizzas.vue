@@ -1,55 +1,21 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
-  <ul class="order__list">
-    <li class="order__item">
-      <div class="product">
-        <img
-          src="public/img/product.svg"
-          class="product__img"
-          width="56"
-          height="56"
-          alt="Капричоза"
-        />
-        <div class="product__text">
-          <h2>Капричоза</h2>
-          <ul>
-            <li>30 см, на тонком тесте</li>
-            <li>Соус: томатный</li>
-            <li>
-              Начинка: грибы, лук, ветчина, пармезан, ананас, бекон, блю чиз
-            </li>
-          </ul>
-        </div>
-      </div>
+  <ul v-if="pizzas" class="order__list">
+    <li v-for="p in pizzas" :key="p.pizzaID" class="order__item">
+      <CartPizzaItemInfo :item="p" />
 
-      <p class="order__price">782 ₽</p>
-    </li>
-    <li class="order__item">
-      <div class="product">
-        <img
-          src="public/img/product.svg"
-          class="product__img"
-          width="56"
-          height="56"
-          alt="Капричоза"
-        />
-        <div class="product__text">
-          <h2>Моя любимая</h2>
-          <ul>
-            <li>30 см, на тонком тесте</li>
-            <li>Соус: томатный</li>
-            <li>Начинка: грибы, лук, ветчина, пармезан, ананас</li>
-          </ul>
-        </div>
-      </div>
-
-      <p class="order__price">2х782 ₽</p>
+      <p class="order__price">{{ getPizzaTotalCostInfo(p) }} ₽</p>
     </li>
   </ul>
 </template>
 
 <script>
+import CartPizzaItemInfo from "@/modules/cart/CartPizzaItemInfo";
 export default {
   name: "OrderPizzas",
+  components: {
+    CartPizzaItemInfo,
+  },
   data() {
     return {};
   },
@@ -57,6 +23,13 @@ export default {
     pizzas: {
       type: Array,
       required: true,
+    },
+  },
+  methods: {
+    getPizzaTotalCostInfo(pizza) {
+      return pizza.pizzaCount === 1
+        ? pizza.pizzaPrice
+        : `${pizza.pizzaCount}x${pizza.pizzaPrice}`;
     },
   },
 };

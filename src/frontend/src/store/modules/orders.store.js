@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 //импортируем типы мутаций
-import { SET_ORDERS } from "@/store/mutation-types";
+import { SET_ORDERS, DELETE_ORDER } from "@/store/mutation-types";
 
 export default {
   namespaced: true,
@@ -115,6 +115,15 @@ export default {
     [SET_ORDERS](state, payload) {
       state.orders = payload;
     },
+    [DELETE_ORDER](state, orderId) {
+
+      const orderIndex = state.orders.findIndex(
+        (el) => el.id === orderId
+      );
+
+      state.orders.splice(orderIndex, 1);
+
+    },
   },
   actions: {
     async getOrders({ commit, rootGetters }) {
@@ -124,5 +133,17 @@ export default {
         commit(SET_ORDERS, data);
       }
     },
+    async deleteOrder({commit}, orderId) {
+      console.log("...store deleteOrder", orderId);
+
+      //удаляем на бэке
+      await this.$api.orders.delete(orderId);
+
+      //и в сторе
+      commit(DELETE_ORDER, orderId);
+    },
+    repeatOrder({commit}, orderId) {
+      console.log("...store repeatOrder");
+    }
   },
 };

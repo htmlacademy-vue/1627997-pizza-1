@@ -1,5 +1,5 @@
 <template>
-  <p class="order__address">Адрес доставки: {{ address.name }}</p>
+  <p class="order__address">Адрес доставки: {{ getAddress }}</p>
 </template>
 
 <script>
@@ -12,6 +12,11 @@ export default {
     address: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    getAddress() {
+      return this.address?.name ?? "Заберу сам";
     },
   },
 };

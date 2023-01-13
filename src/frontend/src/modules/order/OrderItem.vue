@@ -4,7 +4,6 @@
     <OrderPizzas :pizzas="order.orderPizzasNormalized" />
     <OrderMisc :misc="order.orderMiscNormalized" />
     <OrderAddress :address="order.orderAddress" />
-    {{ order.orderTotalPrice }}
   </section>
 </template>
 

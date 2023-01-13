@@ -5,10 +5,10 @@
       <h1 class="title title--big">История заказов</h1>
     </div>
 
-    <OrderItem 
+    <OrderItem
       v-for="order in getOrdersExtended"
       :key="order.orderId"
-      :order="order"  
+      :order="order"
     />
 
     <section class="sheet order">
@@ -128,50 +128,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 export default {
   name: "Orders",
   data() {
-    return {
-      fakeOrder: {
-        id: 1,
-        phone: "+7 999-999-99-99",
-        userId: "string",
-        addressId: 1,
-        pizzas: [
-          {
-            id: 1,
-            name: "string",
-            quantity: 0,
-            sauceId: 0,
-            doughId: 0,
-            sizeId: 0,
-            orderId: 1,
-            ingredients: [
-              {
-                id: 1,
-                quantity: 0,
-                pizzaId: 1,
-                ingredientId: 0,
-              },
-            ],
-          },
-        ],
-        misc: [
-          {
-            id: 1,
-            quantity: 0,
-            orderId: 1,
-            miscId: 0,
-          },
-        ],
-        address: {
-          id: 1,
-          name: "ул.string, д.string, кв.string",
-          street: "string",
-          building: "string",
-          flat: "string",
-          comment: "string",
-          userId: "string",
-        },
-      },
-    };
+    return {};
   },
   components: {
     OrderItem,
