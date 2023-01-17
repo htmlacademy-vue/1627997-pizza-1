@@ -35,7 +35,36 @@ export default {
     },
     deliveryType: deliveryTypeDefault,
   },
-  getters: {},
+  getters: {
+    addressForOrder: (state) => {
+      //если самовывоз, то null
+      if (state.deliveryType === "self"){
+        return null;
+      }
+
+      //если новый адрес, то объект без id
+      if (state.deliveryType === "new_address"){
+        return {
+          street: state.deliveryFormData.street,
+          building: state.deliveryFormData.building,
+          flat: state.deliveryFormData.flat,
+        };
+      }
+
+      //если существующий адрес, то в deliveryType лежит id и надо найти по нему
+      if ( !isNaN(+state.deliveryType) ){
+
+        const addressSelected = state.addresses.find(a => a.id === state.deliveryType);
+
+        return {
+          id: addressSelected.id,
+          street: addressSelected.street,
+          building: addressSelected.building,
+          flat: addressSelected.flat,
+        }
+      }
+    },
+  },
   mutations: {
     [SET_ADDRESSES](state, addresses) {
       state.addresses = addresses;
@@ -76,7 +105,7 @@ export default {
       //если авторизован
       if (rootGetters["Auth/isAuth"]) {
         const data = await this.$api.addresses.query();
-          console.log("getAddresses isAuth");
+          //console.log("getAddresses isAuth");
         
         commit(SET_ADDRESSES, data);
 

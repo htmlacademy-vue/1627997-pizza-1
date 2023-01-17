@@ -2,7 +2,11 @@
 import { createRandomID } from "@/common/helpers";
 
 //импортируем типы мутаций
-import { SET_PIZZA_COUNT, SET_MISC_COUNT,CLEAR_CART } from "@/store/mutation-types";
+import {
+  SET_PIZZA_COUNT,
+  SET_MISC_COUNT,
+  CLEAR_CART,
+} from "@/store/mutation-types";
 
 export default {
   namespaced: true,
@@ -20,15 +24,42 @@ export default {
       return pizza.pizzaPrice * pizza.pizzaCount;
     },
     cartTotalCost: (state) => {
-      const pizzasTotalCost = state.pizzas.reduce( (sum, item) => {
-        return sum + item.pizzaCount * item.pizzaPrice
+      const pizzasTotalCost = state.pizzas.reduce((sum, item) => {
+        return sum + item.pizzaCount * item.pizzaPrice;
       }, 0);
 
-      const miscTotalCost = state.misc.reduce( (sum, item) => {
-        return sum + item.count * item.price
+      const miscTotalCost = state.misc.reduce((sum, item) => {
+        return sum + item.count * item.price;
       }, 0);
 
       return pizzasTotalCost + miscTotalCost;
+    },
+    pizzasForOrderNormalized: (state) => {
+      return state.pizzas.map((p) => {
+        return {
+          name: p.pizzaName,
+          sauceId: p.sauces.id,
+          doughId: p.dough.id,
+          sizeId: p.sizes.id,
+          quantity: p.pizzaCount,
+          ingredients: p.ingredients.map((i) => {
+            return {
+              ingredientId: i.id,
+              quantity: i.count,
+            };
+          }),
+        };
+      });
+    },
+    miscForOrderNormalized: (state) => {
+      return state.misc
+        .filter((m) => m.count !== 0)
+        .map((el) => {
+          return {
+            miscId: el.id,
+            quantity: el.count,
+          };
+        });
     },
   },
   actions: {
@@ -36,14 +67,14 @@ export default {
       commit("addNewPizzaToCart", rootGetters["Builder/pizzaTotalRecipe"]);
     },
     //получаем доп товары с бэка
-    async getMiscProducts({commit}) {
+    async getMiscProducts({ commit }) {
       const data = await this.$api.misc.query();
 
       //расширяем объекты доп продуктов
       const miscProductsDataExtended = data.map((el) => ({
-              ...el,
-             count: 0,
-          }));
+        ...el,
+        count: 0,
+      }));
 
       //записываем в стэйт
       commit("setMiscProducts", miscProductsDataExtended);
@@ -102,20 +133,18 @@ export default {
     },
     //мутация для кол-ва дополнительных продуктов
     [SET_MISC_COUNT](state, item) {
-      state.misc = state.misc.map(
-        (el) => {
-          if (el.id !== item.id) {
-            return el;
-          } else {
-            const count = el.count + item.count;
+      state.misc = state.misc.map((el) => {
+        if (el.id !== item.id) {
+          return el;
+        } else {
+          const count = el.count + item.count;
 
-            return {
-              ...el,
-              count,
-            };
-          }
+          return {
+            ...el,
+            count,
+          };
         }
-      );
+      });
     },
   },
 };

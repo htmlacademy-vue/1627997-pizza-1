@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 
 //импортируем типы мутаций
 import { CLEAR_CART, RESET_BUILDER_PIZZA } from "@/store/mutation-types";
@@ -45,15 +45,26 @@ export default {
     ...mapMutations("Builder", {
       resetBuilder: RESET_BUILDER_PIZZA,
     }),
-    makeOrder() {
-      //открываем попап
-      this.$emit("openPopup");
+    ...mapActions("Orders", ["postOrder"]),
+    ...mapActions("Addresses", ["getAddresses"]),
+    async makeOrder() {
+      //отправляем заказ
+      const data = await this.postOrder();
 
-      //очищаем конструктор
-      this.resetBuilder();
+      //если всё ок и в ответ пришёл id, делаем всё, что надо по логике
+      if (data?.id) {
+        //открываем попап
+        this.$emit("openPopup");
 
-      //очищаем корзину
-      this.clearCart();
+        //очищаем конструктор
+        this.resetBuilder();
+
+        //очищаем корзину
+        this.clearCart();
+
+        //обновляем список адресов на случай, если был новый создан в заказе
+        this.getAddresses();
+      }
     },
     makeAnotherPizza() {
       //очищаем конструктор

@@ -58,7 +58,7 @@ export default {
     };
   },
   created() {
-    console.log("Cart.vue is created");
+    //console.log("Cart.vue is created");
     this.getAddresses();
   },
   computed: {
