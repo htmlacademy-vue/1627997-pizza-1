@@ -20,3 +20,9 @@ export const LOGOUT_USER = "LOGOUT_USER"; //мутация для логаута
 
 export const SET_ORDERS = "SET_ORDERS"; //мутация для получения заказов
 export const DELETE_ORDER = "DELETE_ORDER"; //мутация для удаления заказа
+
+export const POST_ADDRESS = "POST_ADDRESS"; //мутация для отправки адреса
+export const EDIT_ADDRESS = "EDIT_ADDRESS"; //мутация для изменения адреса
+export const SAVE_EDITED_ADDRESS = "SAVE_EDITED_ADDRESS"; //мутация для изменения адреса
+export const DELETE_ADDRESS = "DELETE_ADDRESS"; //мутация для удаления адреса
+export const SHOW_ADDRESS_EDIT_FORM = "SHOW_ADDRESS_EDIT_FORM"; //мутация для показа формы
