@@ -1,4 +1,5 @@
-<template>
+<!-- eslint-disable prettier/prettier -->
+   <template>
   <div class="layout__address">
     <form
       @submit.prevent="postAddress"
@@ -15,6 +16,7 @@
           <label class="input">
             <span>Название адреса*</span>
             <input
+            v-model="addressNameValue"
               type="text"
               name="addr-name"
               placeholder="Введите название адреса"
@@ -26,6 +28,7 @@
           <label class="input">
             <span>Улица*</span>
             <input
+              v-model="addressStreetValue"
               type="text"
               name="addr-street"
               placeholder="Введите название улицы"
@@ -37,6 +40,7 @@
           <label class="input">
             <span>Дом*</span>
             <input
+            v-model="addressBuildingValue"
               type="text"
               name="addr-house"
               placeholder="Введите номер дома"
@@ -48,6 +52,7 @@
           <label class="input">
             <span>Квартира</span>
             <input
+            v-model="addressFlatValue"
               type="text"
               name="addr-apartment"
               placeholder="Введите № квартиры"
@@ -58,6 +63,7 @@
           <label class="input">
             <span>Комментарий</span>
             <input
+            v-model="addressCommentValue"
               type="text"
               name="addr-comment"
               placeholder="Введите комментарий"
@@ -86,7 +92,7 @@ import { mapState, mapMutations, mapActions } from "vuex";
 
 //импортируем типы мутаций
 import {
-  SET_DELIVERY_FIELD,
+  SET_ADDRESS_FIELD,
   DELETE_ADDRESS,
   POST_ADDRESS,
 } from "@/store/mutation-types";
@@ -97,11 +103,66 @@ export default {
     return {};
   },
   computed: {
-    ...mapState("Addresses", ["showDeleteButton"]),
+    ...mapState("Addresses", ["showDeleteButton", "addressEditFormData"]),
+    addressNameValue: {
+      get() {
+        return this.addressEditFormData.name;
+      },
+      set(value) {
+        this.setField({
+          name: "name",
+          value,
+        });
+      },
+    },
+    addressStreetValue: {
+      get() {
+        return this.addressEditFormData.street;
+      },
+      set(value) {
+        this.setField({
+          name: "street",
+          value,
+        });
+      },
+    },
+    addressBuildingValue: {
+      get() {
+        return this.addressEditFormData.building;
+      },
+      set(value) {
+        this.setField({
+          name: "building",
+          value,
+        });
+      },
+    },
+    addressFlatValue: {
+      get() {
+        return this.addressEditFormData.flat;
+      },
+      set(value) {
+        this.setField({
+          name: "flat",
+          value,
+        });
+      },
+    },
+    addressCommentValue: {
+      get() {
+        return this.addressEditFormData.comment;
+      },
+      set(value) {
+        this.setField({
+          name: "comment",
+          value,
+        });
+      },
+    },
   },
   methods: {
     ...mapMutations("Addresses", {
-      setField: SET_DELIVERY_FIELD,
+      setField: SET_ADDRESS_FIELD,
     }),
     ...mapActions("Addresses", {
       deleteAddress: DELETE_ADDRESS,

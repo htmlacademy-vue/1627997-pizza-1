@@ -28,7 +28,11 @@
 import { mapGetters, mapMutations, mapActions } from "vuex";
 
 //импортируем типы мутаций
-import { CLEAR_CART, RESET_BUILDER_PIZZA } from "@/store/mutation-types";
+import {
+  CLEAR_CART,
+  RESET_BUILDER_PIZZA,
+  CLEAR_DELIVERY_FORM,
+} from "@/store/mutation-types";
 
 export default {
   name: "CartFooter",
@@ -47,6 +51,9 @@ export default {
     }),
     ...mapActions("Orders", ["postOrder"]),
     ...mapActions("Addresses", ["getAddresses"]),
+    ...mapMutations("Addresses", {
+      clearDeliveryForm: CLEAR_DELIVERY_FORM,
+    }),
     async makeOrder() {
       //отправляем заказ
       const data = await this.postOrder();
@@ -64,6 +71,9 @@ export default {
 
         //обновляем список адресов на случай, если был новый создан в заказе
         this.getAddresses();
+
+        //очищаем форму доставки
+        this.clearDeliveryForm();
       }
     },
     makeAnotherPizza() {

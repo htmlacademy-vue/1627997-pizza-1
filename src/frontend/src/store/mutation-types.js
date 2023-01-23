@@ -26,3 +26,4 @@ export const EDIT_ADDRESS = "EDIT_ADDRESS"; //мутация для измене
 export const SAVE_EDITED_ADDRESS = "SAVE_EDITED_ADDRESS"; //мутация для изменения адреса
 export const DELETE_ADDRESS = "DELETE_ADDRESS"; //мутация для удаления адреса
 export const SHOW_ADDRESS_EDIT_FORM = "SHOW_ADDRESS_EDIT_FORM"; //мутация для показа формы
+export const SET_ADDRESS_FIELD = "SET_ADDRESS_FIELD"; //мутация для изменения полей формы адреса

@@ -12,6 +12,7 @@ import {
   SAVE_EDITED_ADDRESS,
   DELETE_ADDRESS,
   SHOW_ADDRESS_EDIT_FORM,
+  SET_ADDRESS_FIELD,
 } from "@/store/mutation-types";
 
 //тип доставки по умолчанию
@@ -119,8 +120,19 @@ export default {
     [SET_DELIVERY_FIELD](state, params) {
       state.deliveryFormData[params.name] = params.value;
     },
-    [POST_ADDRESS](state, address = {LOL: 42}) {            //@TODO
-      console.log("...into store POST_ADDRESS", address);
+    [SET_ADDRESS_FIELD](state, params) {
+      state.addressEditFormData[params.name] = params.value;
+    },
+    [POST_ADDRESS](state, address) {
+      // console.log("...into store POST_ADDRESS", address);
+
+      state.addresses.push(address);
+      
+      //закрываем форму
+      state.showAddressEditForm = false;
+
+      //очищаем форму
+      state.addressEditFormData = addressEditFormDataInitial();
     },
     [SHOW_ADDRESS_EDIT_FORM](state) {
       state.showDeleteButton = false;
@@ -132,10 +144,34 @@ export default {
       state.showDeleteButton = true;
     },
     [SAVE_EDITED_ADDRESS](state) {
-      console.log("...into store SAVE_EDITED_ADDRESS");
+      // console.log("...into store SAVE_EDITED_ADDRESS");
+
+      const findIndex = state.addresses.findIndex(
+        (a) => a.id === state.addressEditFormData.id
+      );
+
+      //сохраняем в сторе
+      state.addresses.splice(findIndex, 1, { ...state.addressEditFormData });
+
+      //закрываем форму
+      state.showAddressEditForm = false;
+
+      //очищаем форму
+      state.addressEditFormData = addressEditFormDataInitial();
     },
     [DELETE_ADDRESS](state) {
-      console.log("...into store DELETE_ADDRESS");
+      //console.log("...into store DELETE_ADDRESS");
+
+      const findIndex = state.addresses.findIndex( (a) => a.id === state.addressEditFormData.id );
+        
+      //удаляем в сторе
+      state.addresses.splice(findIndex, 1);
+
+      //закрываем форму
+      state.showAddressEditForm = false;
+
+      //очищаем форму
+      state.addressEditFormData = addressEditFormDataInitial();
     },
   },
   actions: {
@@ -153,12 +189,30 @@ export default {
         commit(SET_ADDRESSES, []);
       }
     },
-    async [POST_ADDRESS]({ state, commit, rootGetters }) {
-      //@TODO
-      commit(POST_ADDRESS);
+    async [POST_ADDRESS]({ state, commit, rootState }) {
+      //проверяем, это добавление нового или сохранение существующего адреса
+      const method = state.addressEditFormData.id ? "put" : "post";
+
+      if (method === "put") {
+        await this.$api.addresses.put({
+          ...state.addressEditFormData,
+          userId: rootState.Auth.user?.id ?? null,
+        });
+
+        commit(SAVE_EDITED_ADDRESS);
+      } 
+      else if (method === "post") {
+        const data = await this.$api.addresses.post({
+          ...state.addressEditFormData,
+          userId: rootState.Auth.user?.id ?? null,
+        });
+
+        commit(POST_ADDRESS, data);
+      }
     },
-    async [DELETE_ADDRESS]({ state, commit, rootGetters }) {
-      //@TODO
+    async [DELETE_ADDRESS]({ state, commit }) {
+      await this.$api.addresses.delete(state.addressEditFormData.id);
+
       commit(DELETE_ADDRESS);
     },
   },
