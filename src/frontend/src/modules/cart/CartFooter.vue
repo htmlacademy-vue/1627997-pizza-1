@@ -17,7 +17,12 @@
     </div>
 
     <div class="footer__submit">
-      <button type="submit" class="button" @click.prevent="makeOrder">
+      <button 
+        type="submit" 
+        class="button" 
+        @click.prevent="makeOrder"
+        :disabled="!isCartValid"
+      >
         Оформить заказ
       </button>
     </div>
@@ -40,7 +45,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters("Cart", ["cartTotalCost"]),
+    ...mapGetters("Cart", ["cartTotalCost", "isCartValid"]),
   },
   methods: {
     ...mapMutations("Cart", {

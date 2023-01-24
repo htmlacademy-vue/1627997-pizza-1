@@ -48,8 +48,18 @@ export const setAuth = (store) => {
 };
 
 //валидация email'a
-export const validateEmail = (email) => {
+export const validateEmail = (email = "") => {
   const format = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
   return String(email).trim().toLowerCase().match(format) !== null;
+};
+
+//валидация телефона
+export const validatePhone = (phone = "") => {
+  return String(phone) !== "";
+};
+
+//валдиация полей формы доставки (требуемые: street и building для нового адреса)
+export const validateDeliveryForm = (form = {}) => {
+  return form.street !== "" && form.building !== "";
 };

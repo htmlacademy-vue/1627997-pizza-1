@@ -1,5 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { createRandomID } from "@/common/helpers";
+import {
+  createRandomID,
+  validateDeliveryForm,
+  validatePhone,
+} from "@/common/helpers";
 
 //импортируем типы мутаций
 import {
@@ -61,6 +65,45 @@ export default {
           };
         });
     },
+    isCartValid: (state, getters, rootState) => {
+      const { deliveryType, deliveryFormData } = rootState["Addresses"];  //deliveryType id: self | new_address | цифра id
+
+      const phone = deliveryFormData.phone;
+
+      //валидируем телефон
+      let isPhoneValid = validatePhone(phone);
+
+      //доп товары
+      let isMiscValid = state.misc.some(m => m.count >0);
+      
+      //пицца(ы)
+      let isPizzaValid = state.pizzas.length > 0;
+      
+      //валидируем итоговое наполнение корзины
+      let isPizzaMiscValid = isPizzaValid || isMiscValid ;
+
+      //валидируем поля формы в зависимости от доставки
+      let isdeliveryFormDataValid = false;
+
+      if (deliveryType === "self"){
+        isdeliveryFormDataValid = isPhoneValid;
+      }
+
+      if (deliveryType === "new_address"){
+        isdeliveryFormDataValid = validateDeliveryForm(deliveryFormData);
+      }
+
+      //если существующий адрес, то в deliveryType лежит id
+      if (!isNaN(+deliveryType)){
+        isdeliveryFormDataValid = true;
+      }
+
+
+      return (
+        isPizzaMiscValid && isPhoneValid && isdeliveryFormDataValid
+      )
+
+    }
   },
   actions: {
     addNewPizzaToCartAction({ commit, rootGetters }) {
