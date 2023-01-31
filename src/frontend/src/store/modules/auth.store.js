@@ -1,42 +1,67 @@
-//импортируем статику
-import userStore from "@/static/user.json";
+/* eslint-disable prettier/prettier */
+import { setAuth } from "@/common/helpers";
+import { LOGOUT_USER } from "@/store/mutation-types";
 
 export default {
   namespaced: true,
   state: {
     user: {},
-    userInitial: {
-      id: null,
-      name: null,
-      email: null,
-      avatar: null,
-      phone: null,
-      password: null,
+    userInitial: {},
+  },
+  actions: {
+    //логинимся
+    async login(context, credentials) {
+      //console.log("INTO LOGIN ACTION, context", context);
+
+      //отправляем логин и пароль
+      const data = await this.$api.auth.login(credentials);
+      //console.log("await this.$api.auth.login(credentials);", data)
+
+      //сохраняем токен
+      this.$jwt.saveToken(data.token);
+
+      //устанавливаем заголовки запросов и получаем данные авторизованного пользователя
+      setAuth(this);
     },
-    userStore,
+    //разлогиниваемся
+    async logout({ commit }, sendRequest = true) {
+      //console.log("INTO LOGOUT ACTION");
+
+      if (sendRequest) {
+        await this.$api.auth.logout();
+      }
+
+      this.$jwt.destroyToken();
+      this.$api.auth.setAuthHeader();
+
+      commit(LOGOUT_USER);
+    },
+    //получаем данные авторизованного пользователя
+    async getMe({ commit, dispatch }) {
+      //console.log("INTO getMe ACTION");
+      try {
+        const user = await this.$api.auth.getMe();
+        //console.log('user store from getMe', user);
+
+        commit("setUser", user);
+      } catch {
+        dispatch("logout", false);
+      }
+    },
   },
   getters: {
     isAuth(state) {
-      return state.user.id !== null;
+      return state.user?.id !== undefined;
     },
   },
   mutations: {
-    //пока не реализован модуль авторизации и не было работы с бэкендом, имитируем авторизованного и неавторизованного пользователя
+    //установка данных пользователя в стейт
     setUser(state, user) {
       state.user = { ...user };
     },
-  },
-  actions: {
-    setUserNonAuth({ state, commit }) {
+    [LOGOUT_USER](state) {
       const user = { ...state.userInitial };
-
-      commit("setUser", user);
-    },
-    //сейчас сюда просто кладём объект user из статического json файла, далее это будет получение по api
-    getUser({ state, commit }) {
-      const user = { ...state.userStore };
-
-      commit("setUser", user);
+      state.user = user;
     },
   },
 };

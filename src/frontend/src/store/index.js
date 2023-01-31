@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import modules from "@/store/modules";
+import vuexPlugins from "@/plugins/vuexPlugins";
+import { setAuth } from "@/common/helpers";
 
 Vue.use(Vuex);
 
@@ -10,17 +12,16 @@ const state = () => ({
 
 const actions = {
   async init({ dispatch }) {
+    //проверяем токен и: устанавливаем заголовки запросов + получаем данные авторизованного пользователя
+    if (this.$jwt.getToken()) {
+      setAuth(this);
+    }
+    //данные для конструктора с бэка
     dispatch("Builder/getPizzaBuilderComponents");
     dispatch("Cart/getMiscProducts");
 
-    //неавторизован
-    // dispatch("Auth/setUserNonAuth");
-
-    //авторизован
-    dispatch("Auth/getUser");
-
     //получаем адреса
-    dispatch("Addresses/getAddresses");
+    //dispatch("Addresses/getAddresses"); - переедет в Cart и Profile
   },
 };
 
@@ -30,4 +31,5 @@ export default new Vuex.Store({
   mutations: {},
   actions,
   modules,
+  plugins: [vuexPlugins],
 });

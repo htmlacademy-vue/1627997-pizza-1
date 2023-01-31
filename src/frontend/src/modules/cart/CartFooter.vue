@@ -17,7 +17,12 @@
     </div>
 
     <div class="footer__submit">
-      <button type="submit" class="button" @click.prevent="makeOrder">
+      <button 
+        type="submit" 
+        class="button" 
+        @click.prevent="makeOrder"
+        :disabled="!isCartValid"
+      >
         Оформить заказ
       </button>
     </div>
@@ -25,10 +30,14 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 
 //импортируем типы мутаций
-import { CLEAR_CART, RESET_BUILDER_PIZZA } from "@/store/mutation-types";
+import {
+  CLEAR_CART,
+  RESET_BUILDER_PIZZA,
+  CLEAR_DELIVERY_FORM,
+} from "@/store/mutation-types";
 
 export default {
   name: "CartFooter",
@@ -36,7 +45,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters("Cart", ["cartTotalCost"]),
+    ...mapGetters("Cart", ["cartTotalCost", "isCartValid"]),
   },
   methods: {
     ...mapMutations("Cart", {
@@ -45,15 +54,32 @@ export default {
     ...mapMutations("Builder", {
       resetBuilder: RESET_BUILDER_PIZZA,
     }),
-    makeOrder() {
-      //открываем попап
-      this.$emit("openPopup");
+    ...mapActions("Orders", ["postOrder"]),
+    ...mapActions("Addresses", ["getAddresses"]),
+    ...mapMutations("Addresses", {
+      clearDeliveryForm: CLEAR_DELIVERY_FORM,
+    }),
+    async makeOrder() {
+      //отправляем заказ
+      const data = await this.postOrder();
 
-      //очищаем конструктор
-      this.resetBuilder();
+      //если всё ок и в ответ пришёл id, делаем всё, что надо по логике
+      if (data?.id) {
+        //открываем попап
+        this.$emit("openPopup");
 
-      //очищаем корзину
-      this.clearCart();
+        //очищаем конструктор
+        this.resetBuilder();
+
+        //очищаем корзину
+        this.clearCart();
+
+        //обновляем список адресов на случай, если был новый создан в заказе
+        this.getAddresses();
+
+        //очищаем форму доставки
+        this.clearDeliveryForm();
+      }
     },
     makeAnotherPizza() {
       //очищаем конструктор
