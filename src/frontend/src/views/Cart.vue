@@ -30,7 +30,10 @@
     </main>
 
     <CartFooter @openPopup="openPopup" />
-    <OrderPopup @closePopup="closePopup" v-if="showPopup" />
+
+    <transition name="popup">
+      <OrderPopup @closePopup="closePopup" v-if="showPopup" />
+    </transition>
   </form>
 </template>
 
@@ -73,12 +76,30 @@ export default {
     },
     closePopup() {
       this.showPopup = false;
-
       //делаем переадресацию, в зависимости от того, авторизован юзер или нет
       const route = this.isAuth ? "/orders" : "/";
 
-      this.$router.push(route);
+      setTimeout(() => {
+        this.$router.push(route);
+      }, 900);
+
+      // //не сработало:
+      // this.$nextTick(function () {
+      //   this.$router.push(route);
+      // });
     },
   },
 };
 </script>
+
+<style>
+.popup-enter-active,
+.popup-leave-active {
+  transition: opacity 0.7s ease-in;
+}
+
+.popup-enter,
+.popup-leave-to {
+  opacity: 0;
+}
+</style>

@@ -1,6 +1,13 @@
+<!-- eslint-disable prettier/prettier -->
 <template>
   <AppLayout>
-    <router-view />
+    <transition
+      name="slide"
+      appear
+      mode="out-in"
+    >
+      <router-view />
+    </transition>
   </AppLayout>
 </template>
 
@@ -22,4 +29,15 @@ export default {
 
 <style lang="scss">
 @import "~@/assets/scss/app";
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s;
+}
+
+.slide-enter,
+.slide-leave-to {
+  transform: translateY(-100%);
+  opacity: 0;
+}
 </style>
