@@ -14,18 +14,20 @@
       <div class="content__constructor">
         <div class="pizza" :class="doughSauceResultClass">
           <div class="pizza__wrapper">
-            <div
-              v-for="ingredient in ingredientsSelected"
-              :key="ingredient.id"
-              :class="[
-                `pizza__filling--${ingredient.value}`,
-                {
-                  'pizza__filling--second': ingredient.count === 2,
-                  'pizza__filling--third': ingredient.count === 3,
-                },
-              ]"
-              class="pizza__filling"
-            ></div>
+            <transition-group name="ingredient">
+              <div
+                v-for="ingredient in ingredientsSelected"
+                :key="ingredient.id"
+                :class="[
+                  `pizza__filling--${ingredient.value}`,
+                  {
+                    'pizza__filling--second': ingredient.count === 2,
+                    'pizza__filling--third': ingredient.count === 3,
+                  },
+                ]"
+                class="pizza__filling"
+              ></div>
+            </transition-group>
           </div>
         </div>
       </div>
@@ -117,3 +119,15 @@ export default {
   },
 };
 </script>
+
+<style>
+.ingredient-enter-active,
+.ingredient-leave-active {
+  transition: opacity 0.5s;
+}
+
+.ingredient-enter,
+.ingredient-leave-to {
+  opacity: 0;
+}
+</style>

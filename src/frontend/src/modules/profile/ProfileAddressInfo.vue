@@ -33,7 +33,6 @@ export default {
     address: {
       type: Object,
       required: true,
-      default: () => ({}),
     },
   },
   methods: {

@@ -17,15 +17,13 @@ export class BuilderApiService {
 
   //получаем данные для конструктора с бэка
   async getBuilderData() {
-    //const links = ["dough", "sizes", "sauces", "ingredients"];
-
-    return Promise.all(
-      this.#resourcesArr.map((link) => {
-        return axios.get(link);
-      })
-    ).then((items) => {
-      return this.getPizzaBuilderComponents(items);
+    const requests = this.#resourcesArr.map((link) => {
+      return axios.get(link);
     });
+
+    const items = await Promise.all(requests);
+
+    return this.getPizzaBuilderComponents(items);
   }
 
   //расширяем объекты теста, размера, соуса, ингредиентов, чтобы использовать это в компонентах

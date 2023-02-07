@@ -35,7 +35,7 @@
           <img
             :src="user.avatar"
             srcset="@/assets/img/users/user5@2x.jpg"
-            alt="user.name"
+            :alt="user.name"
             width="32"
             height="32"
           />
