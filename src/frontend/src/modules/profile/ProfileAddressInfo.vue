@@ -26,15 +26,17 @@ import { mapMutations } from "vuex";
 
 export default {
   name: "ProfileAddressInfo",
-  data() {
-    return {};
-  },
   props: {
     address: {
       type: Object,
       required: true,
     },
   },
+
+  data() {
+    return {};
+  },
+
   methods: {
     ...mapMutations("Addresses", {
       editAddress: EDIT_ADDRESS,

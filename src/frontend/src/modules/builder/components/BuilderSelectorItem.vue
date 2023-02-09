@@ -12,20 +12,21 @@
 
 <script>
 import AppRadioButton from "@/common/components/AppRadioButton";
-import { mapMutations } from "vuex";
 
-//импортируем типы мутаций
+import { mapMutations } from "vuex";
 import { SET_SELECTOR_ITEM } from "@/store/mutation-types";
 
 export default {
   name: "BuilderitemItem",
   components: { AppRadioButton },
+
   props: {
     item: {
       type: Object,
       required: true,
     },
   },
+
   methods: {
     ...mapMutations("Builder", {
       setSelectorItem: SET_SELECTOR_ITEM,

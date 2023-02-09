@@ -40,7 +40,7 @@
           <label class="input">
             <span>Дом*</span>
             <input
-            v-model="addressBuildingValue"
+              v-model="addressBuildingValue"
               type="text"
               name="addr-house"
               placeholder="Введите номер дома"
@@ -52,7 +52,7 @@
           <label class="input">
             <span>Квартира</span>
             <input
-            v-model="addressFlatValue"
+              v-model="addressFlatValue"
               type="text"
               name="addr-apartment"
               placeholder="Введите № квартиры"
@@ -63,7 +63,7 @@
           <label class="input">
             <span>Комментарий</span>
             <input
-            v-model="addressCommentValue"
+              v-model="addressCommentValue"
               type="text"
               name="addr-comment"
               placeholder="Введите комментарий"
@@ -75,13 +75,18 @@
       <div class="address-form__buttons">
         <button
           v-if="showDeleteButton"
+          @click="deleteAddress"
           type="button"
           class="button button--transparent"
-          @click="deleteAddress"
         >
           Удалить
         </button>
-        <button type="submit" class="button">Сохранить</button>
+        <button 
+          type="submit" 
+          class="button"
+        >
+          Сохранить
+        </button>
       </div>
     </form>
   </div>
@@ -90,7 +95,6 @@
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
 
-//импортируем типы мутаций
 import {
   SET_ADDRESS_FIELD,
   DELETE_ADDRESS,
@@ -102,8 +106,10 @@ export default {
   data() {
     return {};
   },
+
   computed: {
     ...mapState("Addresses", ["showDeleteButton", "addressEditFormData"]),
+
     addressNameValue: {
       get() {
         return this.addressEditFormData.name;
@@ -115,6 +121,7 @@ export default {
         });
       },
     },
+
     addressStreetValue: {
       get() {
         return this.addressEditFormData.street;
@@ -126,6 +133,7 @@ export default {
         });
       },
     },
+
     addressBuildingValue: {
       get() {
         return this.addressEditFormData.building;
@@ -137,6 +145,7 @@ export default {
         });
       },
     },
+
     addressFlatValue: {
       get() {
         return this.addressEditFormData.flat;
@@ -148,6 +157,7 @@ export default {
         });
       },
     },
+
     addressCommentValue: {
       get() {
         return this.addressEditFormData.comment;
@@ -160,10 +170,12 @@ export default {
       },
     },
   },
+
   methods: {
     ...mapMutations("Addresses", {
       setField: SET_ADDRESS_FIELD,
     }),
+
     ...mapActions("Addresses", {
       deleteAddress: DELETE_ADDRESS,
       postAddress: POST_ADDRESS,

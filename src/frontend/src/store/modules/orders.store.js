@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-//импортируем типы мутаций
 import { SET_ORDERS, DELETE_ORDER } from "@/store/mutation-types";
 
 export default {
@@ -7,9 +5,11 @@ export default {
   state: {
     orders: [],
   },
+
   getters: {
     getOrdersExtended(state, getters, rootState) {
       //геттер для получения и расширения всех данных, полученных с бэка. Используем в Orders.vue
+
       //получаем доп товары из стора
       const { misc } = rootState["Cart"];
 
@@ -33,7 +33,7 @@ export default {
         //общая стоимость заказа
         let orderTotalPrice = 0;
 
-        //получаем все нужные данные по доп. товарам. quantity >>> count !!!
+        //получаем все нужные данные по доп. товарам.
         const orderMiscNormalized = orderMisc.map((el) => {
           //данные по доп. товару в заказе с бэка
           const { id, quantity, miscId } = el;
@@ -57,7 +57,6 @@ export default {
             count: quantity,
           };
         });
-        //============================
 
         //получаем все нужные данные по пиццам
         const orderPizzasNormalized = orderPizzas.map((el) => {
@@ -99,7 +98,6 @@ export default {
             sizes.multiplier *
             (dough.price + sauces.price + ingredientsTotalPrice);
 
-          //стоимость пиццы на quantity
           orderTotalPrice += pizzaTotalCost * quantity;
 
           return {
@@ -125,6 +123,7 @@ export default {
       });
     },
   },
+
   mutations: {
     [SET_ORDERS](state, payload) {
       state.orders = payload;
@@ -135,6 +134,7 @@ export default {
       state.orders.splice(orderIndex, 1);
     },
   },
+
   actions: {
     async getOrders({ commit, rootGetters }) {
       if (rootGetters["Auth/isAuth"]) {
@@ -144,8 +144,6 @@ export default {
       }
     },
     async deleteOrder({ commit }, orderId) {
-      console.log("...store deleteOrder", orderId);
-
       //удаляем на бэке
       await this.$api.orders.delete(orderId);
 
@@ -153,7 +151,6 @@ export default {
       commit(DELETE_ORDER, orderId);
     },
     repeatOrder({ getters, rootState }, orderId) {
-
       //находим заказ
       const order = getters.getOrdersExtended.find(
         (o) => o.orderId === orderId
@@ -180,24 +177,16 @@ export default {
 
       //вписываем адрес
       rootState["Addresses"].deliveryFormData.phone = order.phone;
-      rootState["Addresses"].deliveryFormData.street = order.orderAddress.street;
-      rootState["Addresses"].deliveryFormData.building = order.orderAddress.building;
+      rootState["Addresses"].deliveryFormData.street =
+        order.orderAddress.street;
+      rootState["Addresses"].deliveryFormData.building =
+        order.orderAddress.building;
       rootState["Addresses"].deliveryFormData.flat = order.orderAddress.flat;
 
       //тип доставки
-      rootState["Addresses"].deliveryType = order?.orderAddress?.id ?? "self"; //если заберу сам, то приходит не orderAddress: {}, a "addressId": null
-
+      rootState["Addresses"].deliveryType = order?.orderAddress?.id ?? "self";
     },
-    async postOrder( {rootState, rootGetters} ) {
-      //формат запроса
-      /*
-      "userId": "5db862e7-183a-4950-a480-5318926da7f1",
-      "phone": "+7 999-999-99-99",
-      "address": null | {}
-      "pizzas": [],
-      "misc": []
-      */
-
+    async postOrder({ rootState, rootGetters }) {
       const orderData = {
         userId: rootState["Auth"]?.user?.id ?? null,
         phone: rootState["Addresses"].deliveryFormData.phone,
@@ -209,7 +198,6 @@ export default {
       //отправляем запрос
       const data = await this.$api.orders.post(orderData);
       return data;
-
     },
   },
 };

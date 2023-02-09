@@ -5,15 +5,17 @@
 <script>
 export default {
   name: "OrderAddress",
-  data() {
-    return {};
-  },
   props: {
     address: {
       type: Object,
       required: true,
     },
   },
+
+  data() {
+    return {};
+  },
+
   computed: {
     getAddress() {
       return this.address?.name ?? "Заберу сам";

@@ -24,6 +24,7 @@
 <script>
 import BuilderSauceSelector from "@/modules/builder/components/BuilderSauceSelector";
 import BuilderIngredientItem from "@/modules/builder/components/BuilderIngredientItem";
+
 import { mapState } from "vuex";
 
 export default {
@@ -32,9 +33,11 @@ export default {
     BuilderSauceSelector,
     BuilderIngredientItem,
   },
+
   data() {
     return {};
   },
+
   computed: {
     ...mapState("Builder", {
       pizzaBuilder: "pizzaBuilder",

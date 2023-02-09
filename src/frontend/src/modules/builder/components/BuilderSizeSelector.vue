@@ -18,6 +18,7 @@
 
 <script>
 import BuilderSelectorItem from "@/modules/builder/components/BuilderSelectorItem";
+
 import { mapState } from "vuex";
 
 export default {
@@ -25,9 +26,11 @@ export default {
   components: {
     BuilderSelectorItem,
   },
+
   data() {
     return {};
   },
+
   computed: {
     ...mapState("Builder", {
       pizzaBuilder: "pizzaBuilder",

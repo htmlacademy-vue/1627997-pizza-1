@@ -1,6 +1,4 @@
 /* eslint-disable prettier/prettier */
-//импортируем статику
-import miscStore from "@/static/misc.json";
 
 //импортируем типы мутаций
 import {
@@ -14,7 +12,6 @@ import {
 export default {
   namespaced: true,
   state: {
-    miscStore,
     pizzaBuilder: {
       //сейчас это просто из json файла, дальше будет получение с сервера
       pizzaID: null,
@@ -28,8 +25,8 @@ export default {
     },
     pizzaBuilderInitial: {},
   },
+
   mutations: {
-    //==============================================================================
     //инициализация основного объекта конструктора
     setPizzaBuilderComponents: (state, payload) => {
       state.pizzaBuilder = { ...state.pizzaBuilder, ...payload };
@@ -77,8 +74,6 @@ export default {
     },
     //мутация для изменения пиццы из корзины в конструкторе
     [CHANGE_PIZZA](state, item) {
-      //console.log(state, item);
-
       const pizzaBuilderInitial = { ...state.pizzaBuilderInitial };
 
       state.pizzaBuilder.dough = pizzaBuilderInitial.dough.map((el) => ({
@@ -98,9 +93,6 @@ export default {
 
       state.pizzaBuilder.ingredients = pizzaBuilderInitial.ingredients.map(
         (el) => {
-          //ищем ингредиент в объекте пиццы, пришедшем из корзины
-          //если нашли - присваиваем новый count
-
           const ingredientInPizza = item.ingredients.find(
             (ing) => ing.id === el.id
           );
@@ -122,23 +114,23 @@ export default {
       state.pizzaBuilder.pizzaCount = item.pizzaCount;
     },
   },
+
   getters: {
-    //==============================================================================
-    //получаем выбранные ингредиенты (count > 0)
+    //получаем выбранные ингредиенты
     ingredientsSelected: (state) => {
       return state.pizzaBuilder.ingredients.filter((el) => {
         return el.count > 0;
       });
     },
-    //получаем выбранное тесто (checked === true)
+    //получаем выбранное тесто
     doughSelected(state) {
       return state.pizzaBuilder.dough.find((el) => el.checked === true);
     },
-    //получаем выбранный размер (checked === true)
+    //получаем выбранный размер
     sizeSelected(state) {
       return state.pizzaBuilder.sizes.find((el) => el.checked === true);
     },
-    //получаем выбранный соус (checked === true)
+    //получаем выбранный соус
     sauceSelected(state) {
       return state.pizzaBuilder.sauces.find((el) => el.checked === true);
     },
@@ -182,13 +174,12 @@ export default {
       ingredients: ingredientsSelected,
     }),
   },
+
   actions: {
     //функция получения элементов конструктора с бэка
     async getPizzaBuilderComponents({ commit }) {
       const pizzaBuilderDataExtended = await this.$api.builder.getBuilderData();
-      // console.log(pizzaBuilderDataExtended);
 
-      //записываем в стэйт
       commit("setPizzaBuilderComponents", pizzaBuilderDataExtended);
     },
     //действие для Drag-n-Drop

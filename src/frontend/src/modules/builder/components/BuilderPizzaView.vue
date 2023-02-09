@@ -56,13 +56,15 @@ import { SET_NAME_PIZZA, RESET_BUILDER_PIZZA } from "@/store/mutation-types";
 
 export default {
   name: "BuilderPizzaView",
-  data() {
-    return {};
-  },
   components: {
     BuilderPriceCounter,
     AppDrop,
   },
+
+  data() {
+    return {};
+  },
+
   computed: {
     ...mapState("Builder", {
       pizzaBuilder: "pizzaBuilder",
@@ -75,7 +77,6 @@ export default {
       "sauceSelected",
     ]),
     pizzaName: {
-      //сделал, как в документации для v-model двунаправленное вычисляемое свойство
       get() {
         return this.pizzaBuilder.pizzaName;
       },
@@ -89,29 +90,32 @@ export default {
       //тут в ТЗ разные английские названия классов, в BuilderDoughSelector модификатор --light\large, а здесь --big\small
       return this.doughSelected.value === "light" ? "small" : "big";
     },
+
     sauceClass() {
       return this.sauceSelected.value;
     },
+
     doughSauceResultClass() {
       return `pizza--foundation--${this.doughClass}-${this.sauceClass}`;
     },
+
     cookButtonIsDisabled() {
       return !this.pizzaName.length || !this.pizzaRecipe.ingredients.length;
     },
   },
+
   methods: {
-    //новое действие для Drag-n-Drop
     ...mapActions("Builder", {
       drop: "dropIngredient",
     }),
-    //новая мутация - устанока имени пиццы
+
     ...mapMutations("Builder", {
       setPizzaName: SET_NAME_PIZZA,
       resetPizzaBuilder: RESET_BUILDER_PIZZA,
     }),
-    //новое действие для добавления в корзину
+
     ...mapActions("Cart", ["addNewPizzaToCartAction"]),
-    //метод, который вызовет 2 экшена: добавление в корзину + сброс конструктора
+
     addToCartAndResetBuilder() {
       this.addNewPizzaToCartAction();
       this.resetPizzaBuilder();
