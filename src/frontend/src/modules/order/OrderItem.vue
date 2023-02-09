@@ -21,14 +21,16 @@ export default {
     OrderMisc,
     OrderAddress,
   },
-  data() {
-    return {};
-  },
+
   props: {
     order: {
       type: Object,
       required: true,
     },
+  },
+
+  data() {
+    return {};
   },
 };
 </script>

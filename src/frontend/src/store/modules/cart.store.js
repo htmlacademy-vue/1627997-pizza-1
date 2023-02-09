@@ -5,7 +5,6 @@ import {
   validatePhone,
 } from "@/common/helpers";
 
-//импортируем типы мутаций
 import {
   SET_PIZZA_COUNT,
   SET_MISC_COUNT,
@@ -19,6 +18,7 @@ export default {
     misc: [],
     miscInitial: [],
   },
+
   getters: {
     isCartEmpty: (state) => !state.pizzas.length,
     pizzaPriceByID: (state) => (pizzaID) => {
@@ -66,7 +66,7 @@ export default {
         });
     },
     isCartValid: (state, getters, rootState) => {
-      const { deliveryType, deliveryFormData } = rootState["Addresses"];  //deliveryType id: self | new_address | цифра id
+      const { deliveryType, deliveryFormData } = rootState["Addresses"]; 
 
       const phone = deliveryFormData.phone;
 
@@ -74,37 +74,34 @@ export default {
       let isPhoneValid = validatePhone(phone);
 
       //доп товары
-      let isMiscValid = state.misc.some(m => m.count >0);
-      
+      let isMiscValid = state.misc.some((m) => m.count > 0);
+
       //пицца(ы)
       let isPizzaValid = state.pizzas.length > 0;
-      
+
       //валидируем итоговое наполнение корзины
-      let isPizzaMiscValid = isPizzaValid || isMiscValid ;
+      let isPizzaMiscValid = isPizzaValid || isMiscValid;
 
       //валидируем поля формы в зависимости от доставки
       let isdeliveryFormDataValid = false;
 
-      if (deliveryType === "self"){
+      if (deliveryType === "self") {
         isdeliveryFormDataValid = isPhoneValid;
       }
 
-      if (deliveryType === "new_address"){
+      if (deliveryType === "new_address") {
         isdeliveryFormDataValid = validateDeliveryForm(deliveryFormData);
       }
 
       //если существующий адрес, то в deliveryType лежит id
-      if (!isNaN(+deliveryType)){
+      if (!isNaN(+deliveryType)) {
         isdeliveryFormDataValid = true;
       }
 
-
-      return (
-        isPizzaMiscValid && isPhoneValid && isdeliveryFormDataValid
-      )
-
-    }
+      return isPizzaMiscValid && isPhoneValid && isdeliveryFormDataValid;
+    },
   },
+
   actions: {
     addNewPizzaToCartAction({ commit, rootGetters }) {
       commit("addNewPizzaToCart", rootGetters["Builder/pizzaTotalRecipe"]);
@@ -119,16 +116,13 @@ export default {
         count: 0,
       }));
 
-      //записываем в стэйт
       commit("setMiscProducts", miscProductsDataExtended);
       commit("setMiscProductsInitial", miscProductsDataExtended);
     },
   },
+  
   mutations: {
     addNewPizzaToCart(state, payload) {
-      //добавляем payload-пиццу из конструктора в корзину:
-      //ищем по pizzaID, если нашлась - заменяем на новый объект, если нет - просто добавляем в корзину
-
       const pizzaInCartIndex = state.pizzas.findIndex(
         (el) => el.pizzaID === payload.pizzaID
       );

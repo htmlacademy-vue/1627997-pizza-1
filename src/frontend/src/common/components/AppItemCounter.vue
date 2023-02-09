@@ -1,6 +1,10 @@
 <!-- eslint-disable prettier/prettier -->
+
 <template>
-  <div class="counter" v-bind="$attrs">
+  <div 
+    class="counter" 
+    v-bind="$attrs"
+  >
     <button
       type="button"
       class="counter__button counter__button--minus"
@@ -9,7 +13,12 @@
     >
       <span class="visually-hidden">Меньше</span>
     </button>
-    <input type="text" name="counter" class="counter__input" :value="value" />
+    <input 
+      type="text" 
+      name="counter" 
+      class="counter__input" 
+      :value="value" 
+    />
     <button
       type="button"
       class="counter__button counter__button--plus"
@@ -30,15 +39,17 @@ export default {
       type: Number,
       default: 0,
     },
+
     min: {
       type: Number,
       default: 0,
     },
+
     max: {
-      //из пропсов
       type: Number,
       default: null,
     },
+
     buttonTheme: {
       type: Object,
       default: () => {},
@@ -51,9 +62,11 @@ export default {
     buttonMinusIsDisabled() {
       return this.value <= this.min;
     },
+
     buttonPlusIsDisabled() {
       return this.max === null ? false : this.value >= this.max;
     },
+
     buttonClassObject() {
       return {
         "counter__button--orange": this.buttonTheme?.orange,

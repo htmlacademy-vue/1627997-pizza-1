@@ -18,7 +18,7 @@ import {
 //тип доставки по умолчанию
 const deliveryTypeDefault = "self";
 
-//deliveryFormData умолчанию
+//deliveryFormData по умолчанию
 const deliveryFormDataInitial = () => ({
   phone: "",
   street: "",
@@ -26,7 +26,7 @@ const deliveryFormDataInitial = () => ({
   flat: "",
 });
 
-//editFormData умолчанию
+//editFormData по умолчанию
 const addressEditFormDataInitial = () => ({
   name: "",
   street: "",
@@ -38,7 +38,6 @@ const addressEditFormDataInitial = () => ({
 export default {
   namespaced: true,
   state: {
-    //addressesStore,
     addresses: [],
     deliveryFormData: {
       phone: "",
@@ -57,6 +56,7 @@ export default {
     showAddressEditForm: false,
     showDeleteButton: false,
   },
+
   getters: {
     addressForOrder: (state) => {
       //если самовывоз, то null
@@ -88,6 +88,7 @@ export default {
       }
     },
   },
+
   mutations: {
     [SET_ADDRESSES](state, addresses) {
       state.addresses = addresses;
@@ -124,10 +125,8 @@ export default {
       state.addressEditFormData[params.name] = params.value;
     },
     [POST_ADDRESS](state, address) {
-      // console.log("...into store POST_ADDRESS", address);
-
       state.addresses.push(address);
-      
+
       //закрываем форму
       state.showAddressEditForm = false;
 
@@ -144,8 +143,6 @@ export default {
       state.showDeleteButton = true;
     },
     [SAVE_EDITED_ADDRESS](state) {
-      // console.log("...into store SAVE_EDITED_ADDRESS");
-
       const findIndex = state.addresses.findIndex(
         (a) => a.id === state.addressEditFormData.id
       );
@@ -160,10 +157,10 @@ export default {
       state.addressEditFormData = addressEditFormDataInitial();
     },
     [DELETE_ADDRESS](state) {
-      //console.log("...into store DELETE_ADDRESS");
+      const findIndex = state.addresses.findIndex(
+        (a) => a.id === state.addressEditFormData.id
+      );
 
-      const findIndex = state.addresses.findIndex( (a) => a.id === state.addressEditFormData.id );
-        
       //удаляем в сторе
       state.addresses.splice(findIndex, 1);
 
@@ -174,18 +171,16 @@ export default {
       state.addressEditFormData = addressEditFormDataInitial();
     },
   },
+  
   actions: {
     //получение адресов по api с бэка
     async getAddresses({ commit, rootGetters }) {
       //если авторизован
       if (rootGetters["Auth/isAuth"]) {
         const data = await this.$api.addresses.query();
-        //console.log("getAddresses isAuth");
 
         commit(SET_ADDRESSES, data);
       } else {
-        console.log("getAddresses NOT isAuth");
-
         commit(SET_ADDRESSES, []);
       }
     },
@@ -200,8 +195,7 @@ export default {
         });
 
         commit(SAVE_EDITED_ADDRESS);
-      } 
-      else if (method === "post") {
+      } else if (method === "post") {
         const data = await this.$api.addresses.post({
           ...state.addressEditFormData,
           userId: rootState.Auth.user?.id ?? null,

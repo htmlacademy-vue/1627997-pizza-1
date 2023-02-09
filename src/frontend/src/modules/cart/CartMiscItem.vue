@@ -24,28 +24,29 @@
 <script>
 import AppItemCounter from "@/common/components/AppItemCounter";
 
-//импортируем типы мутаций
-import { SET_MISC_COUNT } from "@/store/mutation-types";
-
 import { mapMutations } from "vuex";
+import { SET_MISC_COUNT } from "@/store/mutation-types";
 
 export default {
   name: "CartMiscItem",
   components: { AppItemCounter },
+
   props: {
     item: {
       type: Object,
       required: true,
     },
   },
+
   data() {
     return {};
   },
-  computed: {},
+
   methods: {
     ...mapMutations("Cart", {
       setCount: SET_MISC_COUNT,
     }),
+
     setMiscCount({ count }) {
       this.setCount({ ...this.item, count });
     },

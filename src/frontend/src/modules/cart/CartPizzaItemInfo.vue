@@ -22,16 +22,17 @@
 <script>
 export default {
   name: "CartPizzaItemInfo",
-  components: {},
   props: {
     item: {
       type: Object,
       required: true,
     },
   },
+
   data() {
     return {};
   },
+
   computed: {
     pizzaSizeAndDoughInfo() {
       const size = this.item.sizes.name;

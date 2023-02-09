@@ -17,7 +17,9 @@
         href="#" 
         class="button"
         @click.prevent="close"    
-    >Отлично, я жду!</a>
+      >
+        Отлично, я жду!
+      </a>
     </div>
   </div>
 </template>

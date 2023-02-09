@@ -32,7 +32,6 @@
 <script>
 import { mapGetters, mapMutations, mapActions } from "vuex";
 
-//импортируем типы мутаций
 import {
   CLEAR_CART,
   RESET_BUILDER_PIZZA,
@@ -44,21 +43,27 @@ export default {
   data() {
     return {};
   },
+
   computed: {
     ...mapGetters("Cart", ["cartTotalCost", "isCartValid"]),
   },
+
   methods: {
     ...mapMutations("Cart", {
       clearCart: CLEAR_CART,
     }),
+
     ...mapMutations("Builder", {
       resetBuilder: RESET_BUILDER_PIZZA,
     }),
+
     ...mapActions("Orders", ["postOrder"]),
     ...mapActions("Addresses", ["getAddresses"]),
+
     ...mapMutations("Addresses", {
       clearDeliveryForm: CLEAR_DELIVERY_FORM,
     }),
+
     async makeOrder() {
       //отправляем заказ
       const data = await this.postOrder();
@@ -81,6 +86,7 @@ export default {
         this.clearDeliveryForm();
       }
     },
+
     makeAnotherPizza() {
       //очищаем конструктор
       this.resetBuilder();

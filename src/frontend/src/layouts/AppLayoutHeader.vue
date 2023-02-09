@@ -68,9 +68,9 @@ export default {
   },
   methods: {
     ...mapActions("Auth", ["logout"]),
+
     async logMeOut() {
       await this.logout();
-      //await this.$router.push("/");
     },
   },
 };

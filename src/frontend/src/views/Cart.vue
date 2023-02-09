@@ -21,7 +21,11 @@
 
         <div class="cart__additional">
           <ul class="additional-list">
-            <CartMiscItem v-for="item in misc" :key="item.id" :item="item" />
+            <CartMiscItem 
+              v-for="item in misc" 
+              :key="item.id" 
+              :item="item" 
+            />
           </ul>
         </div>
 
@@ -32,19 +36,22 @@
     <CartFooter @openPopup="openPopup" />
 
     <transition name="popup">
-      <OrderPopup @closePopup="closePopup" v-if="showPopup" />
+      <OrderPopup 
+        @closePopup="closePopup" 
+        v-if="showPopup" 
+      />
     </transition>
   </form>
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from "vuex";
-
 import CartPizzaItem from "@/modules/cart/CartPizzaItem";
 import CartMiscItem from "@/modules/cart/CartMiscItem";
 import CartDeliveryForm from "@/modules/cart/CartDeliveryForm";
 import CartFooter from "@/modules/cart/CartFooter";
 import OrderPopup from "@/views/OrderPopup";
+
+import { mapGetters, mapState, mapActions } from "vuex";
 
 export default {
   name: "Cart",
@@ -55,38 +62,38 @@ export default {
     CartFooter,
     OrderPopup,
   },
+
   data() {
     return {
       showPopup: false,
     };
   },
-  created() {
-    //console.log("Cart.vue is created");
-    this.getAddresses();
-  },
+
   computed: {
     ...mapGetters("Cart", ["isCartEmpty", "cartTotalCost"]),
     ...mapState("Cart", ["pizzas", "misc"]),
     ...mapGetters("Auth", ["isAuth"]),
   },
+
+  created() {
+    this.getAddresses();
+  },
+
   methods: {
     ...mapActions("Addresses", ["getAddresses"]),
+
     openPopup() {
       this.showPopup = true;
     },
+
     closePopup() {
       this.showPopup = false;
-      //делаем переадресацию, в зависимости от того, авторизован юзер или нет
+
       const route = this.isAuth ? "/orders" : "/";
 
       setTimeout(() => {
         this.$router.push(route);
       }, 900);
-
-      // //не сработало:
-      // this.$nextTick(function () {
-      //   this.$router.push(route);
-      // });
     },
   },
 };

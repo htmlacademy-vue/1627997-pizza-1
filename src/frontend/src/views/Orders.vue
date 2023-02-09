@@ -21,21 +21,25 @@ import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "Orders",
-  data() {
-    return {};
-  },
   components: {
     OrderItem,
   },
-  methods: {
-    ...mapActions("Orders", ["getOrders"]),
+
+  data() {
+    return {};
   },
+
   computed: {
     ...mapGetters("Orders", ["getOrdersExtended"]),
     ...mapState("Orders", ["orders"]),
   },
+
   created() {
     this.getOrders();
+  },
+
+  methods: {
+    ...mapActions("Orders", ["getOrders"]),
   },
 };
 </script>

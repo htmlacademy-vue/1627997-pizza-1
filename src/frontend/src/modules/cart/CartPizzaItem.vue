@@ -5,7 +5,7 @@
 
     <AppItemCounter
       class="cart-list__counter"
-      :button-theme="{orange: true}"
+      :button-theme="{ orange: true }"
       :value="item.pizzaCount"
       @change="setPizzaCount"
     />
@@ -16,9 +16,9 @@
 
     <div class="cart-list__button">
       <button 
-        type="button" 
-        class="cart-list__edit" 
         @click="changePizza"
+        type="button" 
+        class="cart-list__edit"
       >
         Изменить
       </button>
@@ -30,46 +30,50 @@
 import CartPizzaItemInfo from "@/modules/cart/CartPizzaItemInfo";
 import AppItemCounter from "@/common/components/AppItemCounter";
 
-//импортируем типы мутаций
+import { mapMutations, mapGetters } from "vuex";
 import {
   SET_PIZZA_COUNT,
   RESET_BUILDER_PIZZA,
   CHANGE_PIZZA,
 } from "@/store/mutation-types";
 
-import { mapMutations, mapGetters } from "vuex";
-
 export default {
   name: "CartPizzaItem",
   components: { CartPizzaItemInfo, AppItemCounter },
+
   props: {
     item: {
       type: Object,
       required: true,
     },
   },
+
   data() {
     return {};
   },
+
   computed: {
     ...mapGetters("Cart", ["pizzaPriceByID"]),
+
     price() {
       return this.pizzaPriceByID(this.item.pizzaID);
     },
   },
+
   methods: {
     ...mapMutations("Cart", {
       setCount: SET_PIZZA_COUNT,
     }),
+
     ...mapMutations("Builder", {
       resetBuilder: RESET_BUILDER_PIZZA,
       changePizzaRecipe: CHANGE_PIZZA,
     }),
+
     setPizzaCount({ count }) {
-      //const ob = { ...this.item, count };
-      //console.log("...into setPizzaCount", ob);
       this.setCount({ ...this.item, count });
     },
+
     changePizza() {
       this.resetBuilder();
       this.changePizzaRecipe(this.item);

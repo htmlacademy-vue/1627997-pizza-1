@@ -5,7 +5,11 @@
       <label class="cart-form__select">
         <span class="cart-form__label">Получение заказа:</span>
 
-        <select name="delivery_type" class="select" v-model="deliveryTypeValue">
+        <select
+          v-model="deliveryTypeValue" 
+          name="delivery_type" 
+          class="select" 
+        >
           <option
             v-for="type in deliveryTypesList"
             :key="type.id"
@@ -27,7 +31,10 @@
         />
       </label>
 
-      <div class="cart-form__address" v-if="deliveryTypeValue !== 'self'">
+      <div 
+        v-if="deliveryTypeValue !== 'self'"
+        class="cart-form__address" 
+      >
         <span class="cart-form__label">Новый адрес:</span>
 
         <div class="cart-form__input">
@@ -71,11 +78,9 @@
 </template>
 
 <script>
-//импортируем дефолтные типы доставки для селекта
 import { deliveryTypes } from "@/common/helpers";
-import { mapGetters, mapState, mapMutations } from "vuex";
 
-//импортируем типы мутаций
+import { mapGetters, mapState, mapMutations } from "vuex";
 import {
   SET_DELIVERY_TYPE,
   SET_DELIVERY_PHONE,
@@ -87,18 +92,19 @@ export default {
   data() {
     return {};
   },
+
   computed: {
     ...mapGetters("Auth", ["isAuth"]),
     ...mapState("Addresses", ["addresses", "deliveryFormData", "deliveryType"]),
+
     deliveryTypesList() {
-      //получаем массив типов доставки: дефолтные значения + все значения ранее использованных адресов для пользователя (если он авторизован)
       const deliveryTypesDefault = deliveryTypes();
       const deliveryTypesUser = this.isAuth ? this.addresses : [];
 
       return [...deliveryTypesDefault, ...deliveryTypesUser];
     },
+
     deliveryTypeValue: {
-      //сделал, как в документации для v-model двунаправленное вычисляемое свойство
       get() {
         return this.deliveryType;
       },
@@ -106,8 +112,8 @@ export default {
         this.setDeliveryType(value);
       },
     },
+
     deliveryPhoneValue: {
-      //сделал, как в документации для v-model двунаправленное вычисляемое свойство
       get() {
         return this.deliveryFormData.phone;
       },
@@ -115,6 +121,7 @@ export default {
         this.setDeliveryPhone(value);
       },
     },
+
     deliveryStreetValue: {
       get() {
         return this.deliveryFormData.street;
@@ -126,6 +133,7 @@ export default {
         });
       },
     },
+
     deliveryBuildingValue: {
       get() {
         return this.deliveryFormData.building;
@@ -137,6 +145,7 @@ export default {
         });
       },
     },
+
     deliveryFlatValue: {
       get() {
         return this.deliveryFormData.flat;
@@ -148,6 +157,7 @@ export default {
         });
       },
     },
+
     inputIsDisabled() {
       return (
         this.deliveryTypeValue !== "self" &&
@@ -155,6 +165,7 @@ export default {
       );
     },
   },
+
   methods: {
     ...mapMutations("Addresses", {
       setDeliveryType: SET_DELIVERY_TYPE,

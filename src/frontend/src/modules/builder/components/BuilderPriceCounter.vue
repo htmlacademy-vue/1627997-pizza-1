@@ -10,6 +10,7 @@ export default {
   data() {
     return {};
   },
+
   computed: {
     ...mapGetters("Builder", ["pizzaTotalCost"]),
   },

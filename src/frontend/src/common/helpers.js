@@ -59,7 +59,7 @@ export const validatePhone = (phone = "") => {
   return String(phone) !== "";
 };
 
-//валдиация полей формы доставки (требуемые: street и building для нового адреса)
+//валдиация полей формы доставки
 export const validateDeliveryForm = (form = {}) => {
   return form.street !== "" && form.building !== "";
 };

@@ -16,7 +16,8 @@
       <button 
         @click="showEditForm"
         type="button" 
-        class="button button--border">
+        class="button button--border"
+      >
         Добавить новый адрес
       </button>
     </div>
@@ -24,39 +25,43 @@
 </template>
 
 <script>
-import { mapActions, mapState, mapMutations } from "vuex";
-
-import { SHOW_ADDRESS_EDIT_FORM } from "@/store/mutation-types";
-
 import ProfileUserInfo from "@/modules/profile/ProfileUserInfo";
 import ProfileAddressInfo from "@/modules/profile/ProfileAddressInfo";
 import ProfileAddressEditForm from "@/modules/profile/ProfileAddressEditForm";
 
+import { mapActions, mapState, mapMutations } from "vuex";
+import { SHOW_ADDRESS_EDIT_FORM } from "@/store/mutation-types";
+
 export default {
   name: "Profile",
-  data() {
-    return {};
-  },
   components: {
     ProfileUserInfo,
     ProfileAddressInfo,
     ProfileAddressEditForm,
   },
-  methods: {
-    ...mapActions("Addresses", ["getAddresses"]),
-    ...mapMutations("Addresses", {
-      showEditForm: SHOW_ADDRESS_EDIT_FORM,
-    }),
+
+  data() {
+    return {};
   },
-  created() {
-    this.getAddresses();
-  },
+
   computed: {
     ...mapState("Addresses", [
       "addresses",
       "showAddressEditForm",
       "showDeleteButton",
     ]),
+  },
+
+  created() {
+    this.getAddresses();
+  },
+
+  methods: {
+    ...mapActions("Addresses", ["getAddresses"]),
+
+    ...mapMutations("Addresses", {
+      showEditForm: SHOW_ADDRESS_EDIT_FORM,
+    }),
   },
 };
 </script>

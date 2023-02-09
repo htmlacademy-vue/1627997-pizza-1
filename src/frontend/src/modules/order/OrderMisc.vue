@@ -1,7 +1,10 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
   <ul class="order__additional">
-    <li v-for="el in misc" :key="el.id">
+    <li 
+      v-for="el in misc" 
+      :key="el.id"
+    >
       <img 
         :src="el.image" 
         width="20" 
@@ -19,14 +22,15 @@
 <script>
 export default {
   name: "OrderMisc",
-  data() {
-    return {};
-  },
   props: {
     misc: {
       type: Array,
       required: true,
     },
+  },
+
+  data() {
+    return {};
   },
 };
 </script>

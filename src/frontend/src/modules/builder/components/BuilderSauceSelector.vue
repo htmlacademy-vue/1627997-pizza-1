@@ -13,7 +13,9 @@
 
 <script>
 import BuilderSelectorItem from "@/modules/builder/components/BuilderSelectorItem";
+
 import { mapState } from "vuex";
+
 export default {
   name: "BuilderSauceSelector",
   components: { BuilderSelectorItem },

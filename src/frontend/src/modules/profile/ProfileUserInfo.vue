@@ -30,10 +30,11 @@ export default {
   data() {
     return {};
   },
+
   computed: {
     ...mapState("Auth", ["user"]),
+
     imgUrlNormalized() {
-      //надо убрать .jpg из /public/img/users/user.jpg
       return this.user?.avatar?.replace(".jpg", "");
     },
   },

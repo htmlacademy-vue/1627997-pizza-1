@@ -1,9 +1,6 @@
 import axios from "@/plugins/axios";
 import JwtService from "@/services/jwt.service";
 
-//console.log(axios);
-//console.log(JwtService);
-
 //запрос на чтение-получение
 export class ReadOnlyApiService {
   #resource;

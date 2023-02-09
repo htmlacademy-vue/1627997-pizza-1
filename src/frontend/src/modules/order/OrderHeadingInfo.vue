@@ -10,18 +10,22 @@
     </div>
 
     <div class="order__button">
-      <button 
-        type="button" 
+      <button
+        type="button"
         class="button button--border"
         @click="deleteThisOrder(order.orderId)"
-      >Удалить</button>
+      >
+        Удалить
+      </button>
     </div>
     <div class="order__button">
-      <button 
-        type="button" 
+      <button
+        type="button"
         class="button"
         @click="repeatThisOrder(order.orderId)"
-      >Повторить</button>
+      >
+        Повторить
+      </button>
     </div>
   </div>
 </template>
@@ -31,21 +35,22 @@ import { mapActions } from "vuex";
 
 export default {
   name: "OrderHeadingInfo",
-  data() {
-    return {};
-  },
   props: {
     order: {
       type: Object,
       required: true,
     },
   },
+
+  data() {
+    return {};
+  },
+
   methods: {
     ...mapActions("Orders", {
-      deleteThisOrder: "deleteOrder", //ГОТОВ
+      deleteThisOrder: "deleteOrder",
       repeatThisOrder: "repeatOrder",
     }),
-    //  СДЕЛАТЬ НОРМАЛЬНЫЕ МЕТОДЫ ВМЕСТО МОКОВЫХ: делаем стор адреса, потом доделываем стор заказов (повторить заказ), потом эти методы
   },
 };
 </script>
