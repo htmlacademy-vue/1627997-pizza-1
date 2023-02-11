@@ -35,10 +35,10 @@
 
     <CartFooter @openPopup="openPopup" />
 
-    <transition name="popup">
+    <transition name="cart__popup--fade">
       <OrderPopup 
-        @closePopup="closePopup" 
-        v-if="showPopup" 
+        v-if="showPopup"
+        @closePopup="closePopup"  
       />
     </transition>
   </form>
@@ -100,13 +100,13 @@ export default {
 </script>
 
 <style>
-.popup-enter-active,
-.popup-leave-active {
+.cart__popup--fade-enter-active,
+.cart__popup--fade-leave-active {
   transition: opacity 0.7s ease-in;
 }
 
-.popup-enter,
-.popup-leave-to {
+.cart__popup--fade-enter,
+.cart__popup--fade-leave-to {
   opacity: 0;
 }
 </style>

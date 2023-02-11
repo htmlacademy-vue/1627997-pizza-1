@@ -17,7 +17,7 @@ import { mapMutations } from "vuex";
 import { SET_SELECTOR_ITEM } from "@/store/mutation-types";
 
 export default {
-  name: "BuilderitemItem",
+  name: "BuilderSelectorItem",
   components: { AppRadioButton },
 
   props: {
