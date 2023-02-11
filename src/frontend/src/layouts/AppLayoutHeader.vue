@@ -16,7 +16,8 @@
     </div>
     <div class="header__user">
       <router-link 
-        v-if="!isAuth" 
+        v-if="!isAuth"
+        key="to-login" 
         to="/login" 
         class="header__login"
       >
@@ -24,7 +25,8 @@
       </router-link>
 
       <router-link 
-        v-else 
+        v-else
+        key="to-profile" 
         to="/profile" 
       >
         <picture>

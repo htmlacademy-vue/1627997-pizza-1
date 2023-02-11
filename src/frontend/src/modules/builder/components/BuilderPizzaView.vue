@@ -14,7 +14,7 @@
       <div class="content__constructor">
         <div class="pizza" :class="doughSauceResultClass">
           <div class="pizza__wrapper">
-            <transition-group name="ingredient">
+            <transition-group name="pizza__filling--fade">
               <div
                 v-for="ingredient in ingredientsSelected"
                 :key="ingredient.id"
@@ -26,7 +26,7 @@
                   },
                 ]"
                 class="pizza__filling"
-              ></div>
+              />
             </transition-group>
           </div>
         </div>
@@ -125,13 +125,13 @@ export default {
 </script>
 
 <style>
-.ingredient-enter-active,
-.ingredient-leave-active {
+.pizza__filling--fade-enter-active,
+.pizza__filling--fade-leave-active {
   transition: opacity 0.5s;
 }
 
-.ingredient-enter,
-.ingredient-leave-to {
+.pizza__filling--fade-enter,
+.pizza__filling--fade-leave-to {
   opacity: 0;
 }
 </style>
